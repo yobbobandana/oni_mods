@@ -16,7 +16,7 @@ clusterCategory: 2
 #   sandstone, swamp/marsh, wasteland
 
 startWorldIndex: 0
-numRings: 12
+numRings: 16
 worldPlacements:
 - world: expansion1::worlds/PureStartRustRadioactive
   buffer: 2
@@ -29,56 +29,58 @@ worldPlacements:
     min: 3
     max: 3
 - world: expansion1::worlds/PureWarpForestJungle # Warp world
-  buffer: 3
+  buffer: 2
   allowedRings:
     min: 5
-    max: 5
-# Outer Worlds
+    max: 6
+# Inner Worlds
 - world: expansion1::worlds/PureAsteroidSandstone
+  buffer: 2
+  allowedRings:
+    min: 3
+    max: 6
+- world: expansion1::worlds/PureAsteroidWasteland
   buffer: 3
   allowedRings:
     min: 4
-    max: 11
+    max: 7
+# Middle Worlds
 - world: expansion1::worlds/PureAsteroidSwampMarsh
   buffer: 3
   allowedRings:
     min: 4
-    max: 11
-- world: expansion1::worlds/PureAsteroidWasteland
-  buffer: 2
-  allowedRings:
-    min: 4
-    max: 7
-- world: expansion1::worlds/TundraMoonlet # Fullerene renewable
-  buffer: 3
-  allowedRings:
-    min: 6
-    max: 8
-- world: expansion1::worlds/MarshyMoonlet # Isoresin renewable
-  buffer: 3
-  allowedRings:
-    min: 5
-    max: 8
-- world: expansion1::worlds/MooMoonlet
-  buffer: 2
-  allowedRings:
-    min: 6
-    max: 11
-- world: expansion1::worlds/WaterMoonlet # Fullerene (max allows for Petro roundtrip)
-  buffer: 3
-  allowedRings:
-    min: 6
     max: 9
+- world: expansion1::worlds/TundraMoonlet # Fullerene renewable
+  buffer: 4
+  allowedRings:
+    min: 6
+    max: 10
+- world: expansion1::worlds/WaterMoonlet # Fullerene (max allows for Petro roundtrip)
+  buffer: 4
+  allowedRings:
+    min: 6
+    max: 10
+# Outer Worlds
+- world: expansion1::worlds/MarshyMoonlet # Isoresin renewable
+  buffer: 4
+  allowedRings:
+    min: 8
+    max: 12
+- world: expansion1::worlds/MooMoonlet
+  buffer: 4
+  allowedRings:
+    min: 8
+    max: 12
 - world: expansion1::worlds/NiobiumMoonlet # Niobium renewable
-  buffer: 2
+  buffer: 5
   allowedRings:
-    min: 7
-    max: 10
+    min: 8
+    max: 12
 - world: expansion1::worlds/RegolithMoonlet # Meteors, voles, regolith
-  buffer: 3
+  buffer: 5
   allowedRings:
-    min: 5
-    max: 10
+    min: 8
+    max: 12
 
 
 poiPlacements:
@@ -88,8 +90,8 @@ poiPlacements:
     numToSpawn: 1
     avoidClumping: false
     allowedRings:
-      min: 8
-      max: 11
+      min: 12
+      max: 15
 
   - pois: # spawn all of these
       - HarvestableSpacePOI_SandyOreField # specific to a sandstone start asteroid!
@@ -114,7 +116,7 @@ poiPlacements:
     numToSpawn: 5
     allowedRings:
       min: 8
-      max: 11
+      max: 15
   
   - pois:  # spawn all of these
       - HarvestableSpacePOI_RadioactiveGasCloud
@@ -122,8 +124,8 @@ poiPlacements:
     numToSpawn: 2
     avoidClumping: true
     allowedRings:
-      min: 10
-      max: 11
+      min: 11
+      max: 15
   
   - pois:
       - HarvestableSpacePOI_RockyAsteroidField
@@ -132,11 +134,11 @@ poiPlacements:
       - HarvestableSpacePOI_ForestyOreField
       - HarvestableSpacePOI_SwampyOreField
       - HarvestableSpacePOI_OrganicMassField
-    numToSpawn: 5
+    numToSpawn: 8
     canSpawnDuplicates: true
     allowedRings:
       min: 5
-      max: 7
+      max: 9
       
   - pois:
       - HarvestableSpacePOI_CarbonAsteroidField
@@ -155,11 +157,11 @@ poiPlacements:
       - HarvestableSpacePOI_FrozenOreField
       - HarvestableSpacePOI_RadioactiveGasCloud
       - HarvestableSpacePOI_RadioactiveAsteroidField
-    numToSpawn: 10
+    numToSpawn: 16
     canSpawnDuplicates: true
     allowedRings:
       min: 7
-      max: 11
+      max: 15
       
   # artifact POIs
   - pois:
@@ -177,8 +179,8 @@ poiPlacements:
     numToSpawn: 1
     avoidClumping: true
     allowedRings:
-      min: 9
-      max: 11
+      min: 11
+      max: 15
       
   - pois:
       - ArtifactSpacePOI_GravitasSpaceStation2
@@ -190,5 +192,5 @@ poiPlacements:
     avoidClumping: true
     allowedRings:
       min: 4
-      max: 11
+      max: 15
 

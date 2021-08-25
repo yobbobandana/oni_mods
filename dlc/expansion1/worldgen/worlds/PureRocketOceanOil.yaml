@@ -1,0 +1,216 @@
+name: STRINGS.WORLDS.PUREROCKET_OCEANOIL.NAME
+description: STRINGS.WORLDS.PUREROCKET_OCEANOIL.DESCRIPTION
+nameTable: OILY
+asteroidIcon: asteroid_oil_planet_kanim
+disableWorldTraits: true
+
+worldsize:
+  X: 128
+  Y: 153
+layoutMethod: PowerTree
+
+defaultsOverrides:
+  data:
+    DrawWorldBorderOverVacuum: false
+    DrawWorldBorder: true
+    WorldBorderThickness: 5
+    WorldBorderRange: 2
+    OverworldDensityMin: 18
+    OverworldDensityMax: 18
+    OverworldAvoidRadius: 5
+    OverworldSampleBehaviour: PoissonDisk
+
+startSubworldName: expansion1::subworlds/barren/LargeChasmStart
+startingBaseTemplate:  poi/poi_satellite_3_a
+startingBasePositionHorizontal:
+  min: 0.35
+  max: 0.65
+startingBasePositionVertical:
+  min: 0.65
+  max: 0.65
+
+fixedTraits:
+  - sunlightLow
+  - cosmicRadiationMedLow
+
+# List all the subworld files to load
+subworldFiles:
+  - name: expansion1::subworlds/barren/LargeChasmStart
+  - name: expansion1::subworlds/barren/LargeChasm
+    overridePower: 0.6
+  - name: subworlds/space/Space
+  - name: expansion1::subworlds/space/SpaceWithSaltyBorder
+    overridePower: 1.25
+  - name: expansion1::subworlds/ocean/med_OceanSurface
+  - name: expansion1::subworlds/ocean/OceanSurface
+    overridePower: 1.5
+  - name: expansion1::subworlds/ocean/med_Ocean
+  - name: subworlds/ocean/Ocean
+  - name: subworlds/ocean/OceanDeep
+  - name: subworlds/ocean/OceanHot
+  - name: subworlds/oil/OilPatch
+  - name: expansion1::subworlds/oil/OilSparse
+  - name: expansion1::subworlds/oil/OilWells
+  - name: subworlds/oil/OilPockets
+  - name: expansion1::subworlds/magma/BottomSmall
+  - name: subworlds/magma/Bottom
+
+unknownCellsAllowedSubworlds:
+  - tagcommand: Default
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/ocean/med_Ocean
+      - subworlds/ocean/Ocean
+      - subworlds/ocean/OceanDeep
+  - tagcommand: DistanceFromTag
+    tag: AtEdge
+    minDistance: 3
+    maxDistance: 3
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/barren/LargeChasm
+  - tagcommand: AtTag
+    tag: AtSurface
+    command: Replace
+    subworldNames:
+      - subworlds/space/Space
+  - tagcommand: DistanceFromTag
+    tag: AtSurface
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/space/SpaceWithSaltyBorder
+  - tagcommand: DistanceFromTag
+    tag: AtSurface
+    minDistance: 2
+    maxDistance: 2
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/ocean/med_OceanSurface
+      - expansion1::subworlds/ocean/OceanSurface
+  - tagcommand: DistanceFromTag
+    tag: AtDepths
+    minDistance: 3
+    maxDistance: 3
+    command: Replace
+    subworldNames:
+      - subworlds/ocean/OceanHot
+      - subworlds/oil/OilPatch
+      - expansion1::subworlds/oil/OilSparse
+  - tagcommand: DistanceFromTag
+    tag: AtDepths
+    minDistance: 2
+    maxDistance: 2
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/oil/OilSparse
+      - expansion1::subworlds/oil/OilWells
+      - subworlds/oil/OilPockets
+  - tagcommand: DistanceFromTag
+    tag: AtDepths
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - subworlds/oil/OilPockets
+      - expansion1::subworlds/oil/OilWells
+      - expansion1::subworlds/magma/BottomSmall
+  - tagcommand: DistanceFromTag
+    tag: AtDepths
+    minDistance: 0
+    maxDistance: 0
+    command: Replace
+    subworldNames:
+      - subworlds/magma/Bottom
+
+worldTemplateRules:
+  # Boons
+  - names:
+    - expansion1::poi/boon/bedroom
+    - expansion1::poi/boon/washroom
+    - expansion1::poi/boon/power
+    - expansion1::poi/boon/kitchen
+    - expansion1::poi/boon/well
+    - expansion1::poi/boon/farm
+    listRule: TrySome
+    someCount: 2
+    priority: 50
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 0
+        maxDistance: 5
+      - command: IntersectWith
+        zoneTypes: [Ocean]
+      - command: ExceptWith
+        subworldNames:
+          - expansion1::subworlds/barren/LargeChasmStart
+          - expansion1::subworlds/barren/LargeChasm
+  # salt water geyser poi
+  - names:
+      - poi/poi_ocean_geyser_saltwater
+    listRule: GuaranteeSomeTryMore
+    someCount: 1
+    moreCount: 1
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Ocean]
+  # steam
+  - names:
+      - geysers/steam
+      - geysers/hot_steam
+    listRule: GuaranteeOne
+    priority: 80
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Ocean]
+  # Curated geysers
+  - names:
+    - geysers/chlorine_gas
+    - geysers/methane
+    - geysers/small_volcano
+    - geysers/hot_hydrogen
+    listRule: TryOne
+    times: 3
+    allowDuplicates: true
+    useRelaxedFiltering: true
+    priority: 10
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 2
+        maxDistance: 10
+      - command: ExceptWith
+        zoneTypes: [ Space ]
+      - command: ExceptWith
+        subworldNames:
+          - expansion1::subworlds/barren/LargeChasmStart
+          - expansion1::subworlds/barren/LargeChasm
+  # Oil
+  - names:
+    - poi/oil/small_oilpockets_geyser_a
+    - poi/oil/small_oilpockets_geyser_b
+    - poi/oil/small_oilpockets_geyser_c
+    - poi/oil/small_oilpockets_geyser_d
+    - poi/oil/small_oilpockets_geyser_e
+    - poi/oil/small_oilpockets_geyser_f
+    - poi/oil/small_oilpockets_geyser_g
+    - poi/oil/small_oilpockets_geyser_h
+    listRule: GuaranteeSomeTryMore
+    someCount: 3
+    moreCount: 3
+    priority: 105
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ OilField ]
+      - command: IntersectWith
+        tagcommand: DistanceFromTag
+        tag: AtDepths
+        minDistance: 0
+        maxDistance: 3
+
+

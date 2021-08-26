@@ -6,7 +6,7 @@ disableWorldTraits: true
 
 worldsize:
   X: 144
-  Y: 256
+  Y: 248
 layoutMethod: PowerTree
 
 defaultsOverrides:

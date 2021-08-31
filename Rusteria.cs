@@ -83,16 +83,26 @@ namespace Rusteria
     [HarmonyPatch("GenerateConfigs")]
     public class GeyserGenericConfig_GenerateConfigs_Patch
     {
-        public const string Id = "liquid_ethanol";
-        public static string Name = UI.FormatAsLink("Chilled Ethanol Geyser", $"GeyserGeneric_{Id.ToUpper()}");
-        public static string Description = $"A highly pressurized geyser that periodically erupts with {UI.FormatAsLink("Chilled Ethanol", "ETHANOL")}.";
+        // liquid ethanol
+        public const string EthId = "liquid_ethanol";
+        public static string EthName = UI.FormatAsLink("Chilled Ethanol Geyser", $"GeyserGeneric_{EthId.ToUpper()}");
+        public static string EthDescription = $"A highly pressurized geyser that periodically erupts with {UI.FormatAsLink("Chilled Ethanol", "ETHANOL")}.";
+
+        // liquid chlorine
+        public const string ChlId = "liquid_chlorine";
+        public static string ChlName = UI.FormatAsLink("Liquid Chlorine Geyser", $"GeyserGeneric_{ChlId.ToUpper()}");
+        public static string ChlDescription = $"A highly pressurized geyser that periodically erupts with {UI.FormatAsLink("Liquid Chlorine", "CHLORINE")}.";
+
 
         private static void Postfix(List<GeyserGenericConfig.GeyserPrefabParams> __result)
         {
-            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{Id.ToUpper()}.NAME", Name);
-            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{Id.ToUpper()}.DESC", Description);
+            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{EthId.ToUpper()}.NAME", EthName);
+            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{EthId.ToUpper()}.DESC", EthDescription);
+            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{ChlId.ToUpper()}.NAME", ChlName);
+            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{ChlId.ToUpper()}.DESC", ChlDescription);
 
-            __result.Add(new GeyserGenericConfig.GeyserPrefabParams("geyser_liquid_water_slush_kanim", 4, 2, new GeyserConfigurator.GeyserType(Id, SimHashes.Ethanol, 263.15f, 1000f, 2000f, 500f, 60f, 1140f, 0.1f, 0.9f, 15000f, 135000f, 0.4f, 0.8f)));
+            __result.Add(new GeyserGenericConfig.GeyserPrefabParams("geyser_liquid_water_slush_kanim", 4, 2, new GeyserConfigurator.GeyserType(EthId, SimHashes.Ethanol, 263.15f, 1000f, 2000f, 500f, 60f, 1140f, 0.1f, 0.9f, 15000f, 135000f, 0.4f, 0.8f)));
+            __result.Add(new GeyserGenericConfig.GeyserPrefabParams("geyser_liquid_water_filthy_kanim", 4, 2, new GeyserConfigurator.GeyserType(ChlId, SimHashes.Chlorine, 203.15f, 100f, 200f, 500f, 60f, 1140f, 0.1f, 0.9f, 15000f, 135000f, 0.4f, 0.8f)));
         }
     }
 

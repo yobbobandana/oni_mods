@@ -135,7 +135,7 @@ worldTemplateRules:
   # liquid chlorine... except it doesn't exist? what?
   # so gaseous chlorine...???
   - names:
-      - geysers/chlorine_gas
+      - geysers/liquid_chlorine
     listRule: GuaranteeOne
     priority: 100
     allowedCellsFilter:

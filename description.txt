@@ -1,0 +1,24 @@
+A starting world composed mainly of rust, and a supporting Spaced Out asteroid cluster.
+
+The starting world and the nearby planetoids all have fewer biomes than usual, but there are more asteroids floating in space to compensate.
+
+This is a difficult starting scenario. Food will be hard to come by, and temperature management is crucial. Nearby asteroids may lack the resources you are used to, and significant rocket-based exploration will be required to obtain all the usual biomes.
+
+Features:
+ * a new starting planetoid, consisting mostly of rust.
+ * fewer biomes in the teleporter and crashed satellite worlds
+ * new tiny asteroids: sandstone, wasteland, and swampy marsh.
+ * an expanded starmap: 15 rings in stead of 11
+ * two new geyers: liquid ethanol, liquid chlorine, both guaranteed in the starting world.
+
+The initial world is primarily rust, with a small forest start to get you going. The teleporter expansion contains no oil, but does provide biological alternatives for some tasks. The first asteroid accessible by rocketry is difficult to get a foothold on, but once settled should provide a solid base for industry.
+
+To support the rust-based start, two new geyser types are included: a liquid ethanol geyser and a liquid chlorine geyser. At least one of each is guaranteed on the starting world. The ethanol geyser, along with significant existing reserves of standing ethanol, should make nosh-based food production viable.
+
+New small asteroids have been created to provide the critters and plants that would 
+normally be available from the initial three asteroids but now are not. These are facilitated by an expanded starmap, with 15 rings in stead of the standard 11. This includes the DLC lifeforms such as grubfruit and plug slugs. They should be able to be found early on, not too distant from the starting planetoid.
+
+I originally created this scenario to explore the possibility of single-biome worlds. Although the starting planetoid is slightly smaller than in the stock Spaced Out starts, it should feel less cramped and provide an interesting challenge, while staying true to the Spaced Out ideal.
+
+source: ...
+copyright: do what you want with it license

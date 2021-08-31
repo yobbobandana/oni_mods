@@ -4,6 +4,7 @@ requiredDlcId: EXPANSION1_ID
 coordinatePrefix: P-RUST-C
 menuOrder: 6
 clusterCategory: 2
+difficulty: 5
 
 # starting asteroid:
 #   space > barren > rust > uranium > ice
@@ -93,6 +94,7 @@ poiPlacements:
       min: 12
       max: 15
 
+  # TODO: something specific to rust start?
   - pois: # spawn all of these
       - HarvestableSpacePOI_SandyOreField # specific to a sandstone start asteroid!
     numToSpawn: 1

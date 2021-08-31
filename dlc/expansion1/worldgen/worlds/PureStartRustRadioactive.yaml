@@ -101,12 +101,33 @@ unknownCellsAllowedSubworlds:
       - expansion1::subworlds/frozen/FrozenCore
 
 worldTemplateRules:
-  # two ethanol... except it doesn't exist
-  # so p-water for trees i guess...
+  # ethanol geysers don't exist in stock, so had to be coded in.
+  # adapted code from https://github.com/daviscook477/ONI-Mods/tree/master/src/EthanolGeyser
+  # one liquid ethanol nearby
+  - names:
+      - geysers/liquid_ethanol
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 1
+        maxDistance: 1
+  # one liquid ethanol anywhere
+  - names:
+      - geysers/liquid_ethanol
+    listRule: GuaranteeOne
+    priority: 100
+    allowDuplicates: true
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Rust]
+  # p-water for trees
   - names:
       - geysers/slush_water
       - geysers/filthy_water
-    listRule: GuaranteeAll
+    listRule: GuaranteeOne
     priority: 100
     allowedCellsFilter:
       - command: Replace
@@ -160,6 +181,7 @@ worldTemplateRules:
       - geysers/slush_water
       - expansion1::geysers/slush_salt_water
     listRule: GuaranteeOne
+    allowDuplicates: true
     priority: 100
     allowedCellsFilter:
       - command: Replace

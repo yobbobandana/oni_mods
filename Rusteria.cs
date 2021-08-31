@@ -1,8 +1,22 @@
 using HarmonyLib;
 using KMod;
+using System.Collections.Generic;
+using STRINGS;
 
 namespace Rusteria
 {
+    // this just does the default thing for now
+    public class Rusteria : UserMod2
+    {
+        public override void OnLoad(Harmony harmony)
+        {
+            base.OnLoad(harmony);
+            //PUtil.InitLibrary();
+            //new PLocalization().Register();
+        }
+    }
+
+    // TODO: actually patch the correct thing, whatever that is
     [HarmonyPatch(typeof(Db), "Initialize")]
     public class RusteriaPatch
     {
@@ -63,13 +77,23 @@ namespace Rusteria
 
         }
     }
-    public class Rusteria : UserMod2
+
+    // code adapted from https://github.com/daviscook477/ONI-Mods/tree/master/src/EthanolGeyser
+    [HarmonyPatch(typeof(GeyserGenericConfig))]
+    [HarmonyPatch("GenerateConfigs")]
+    public class GeyserGenericConfig_GenerateConfigs_Patch
     {
-        public override void OnLoad(Harmony harmony)
+        public const string Id = "liquid_ethanol";
+        public static string Name = UI.FormatAsLink("Chilled Ethanol Geyser", $"GeyserGeneric_{Id.ToUpper()}");
+        public static string Description = $"A highly pressurized geyser that periodically erupts with {UI.FormatAsLink("Chilled Ethanol", "ETHANOL")}.";
+
+        private static void Postfix(List<GeyserGenericConfig.GeyserPrefabParams> __result)
         {
-            base.OnLoad(harmony);
-            //PUtil.InitLibrary();
-            //new PLocalization().Register();
+            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{Id.ToUpper()}.NAME", Name);
+            Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{Id.ToUpper()}.DESC", Description);
+
+            __result.Add(new GeyserGenericConfig.GeyserPrefabParams("geyser_liquid_water_slush_kanim", 4, 2, new GeyserConfigurator.GeyserType(Id, SimHashes.Ethanol, 263.15f, 1000f, 2000f, 500f, 60f, 1140f, 0.1f, 0.9f, 15000f, 135000f, 0.4f, 0.8f)));
         }
     }
+
 }

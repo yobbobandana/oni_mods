@@ -114,6 +114,27 @@ worldTemplateRules:
         tag: AtStart
         minDistance: 1
         maxDistance: 1
+  # p-water also nearby
+  - names:
+      - geysers/slush_water
+      - geysers/filthy_water
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 1
+        maxDistance: 2
+  # liquid chlorine... except it doesn't exist? what?
+  # so i had to mod it in... not as easy as one might expect.
+  - names:
+      - geysers/liquid_chlorine
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Radioactive]
   # one liquid ethanol anywhere
   - names:
       - geysers/liquid_ethanol
@@ -123,24 +144,6 @@ worldTemplateRules:
     allowedCellsFilter:
       - command: Replace
         zoneTypes: [Rust]
-  # p-water for trees
-  - names:
-      - geysers/slush_water
-      - geysers/filthy_water
-    listRule: GuaranteeOne
-    priority: 100
-    allowedCellsFilter:
-      - command: Replace
-        zoneTypes: [Rust]
-  # liquid chlorine... except it doesn't exist? what?
-  # so gaseous chlorine...???
-  - names:
-      - geysers/liquid_chlorine
-    listRule: GuaranteeOne
-    priority: 100
-    allowedCellsFilter:
-      - command: Replace
-        zoneTypes: [Radioactive]
   # liquid co2
   - names:
       - expansion1::poi/radioactive/uranium_fields_liquid_co2_geyser

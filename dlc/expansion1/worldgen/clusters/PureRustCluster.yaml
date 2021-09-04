@@ -4,14 +4,14 @@ requiredDlcId: EXPANSION1_ID
 coordinatePrefix: P-RUST-C
 menuOrder: 6
 clusterCategory: 2
-difficulty: 5
+difficulty: 4
 
 # starting asteroid:
-#   space > barren > rust > uranium > ice
+#   space > cold barren > rust > uranium/rust > uranium/ice
 # warp expansion:
-#   forest > forest/jungle > jungle > barren/coal > magma
+#   gold amalgam border > forest/jungle > magma
 # rocket expansion:
-#   ocean > ocean/cold oil > hot ocean/oil > oil/magma > magma
+#   salt border > ocean > ocean/cold oil > hot ocean/oil > oil/magma > magma
 # asteroids:
 #   same as usual +
 #   sandstone, swamp/marsh, wasteland

@@ -15,33 +15,33 @@ biomes:
     weight: 2
     tags:
       - med_Oxyfern
-      - ForestTree     
+      - ForestTree
       - med_BasicSingleHarvestPlant
-      - forestCluster_BasicSingleHarvestPlantSeed
+      - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
       - med_LightBug
-      - LeafyPlant        
+      - LeafyPlant
       - LeafyPlantSeed
-      - med_Squirrel          
+      - med_Squirrel
   - name: biomes/Forest/Basic
     weight: 2
     tags:
       - Oxyfern
-      - med_ForestTree     
+      - med_ForestTree
       - med_BasicSingleHarvestPlant
-      - forestCluster_BasicSingleHarvestPlantSeed
+      - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
       - med_LightBug
-      - LeafyPlant        
+      - LeafyPlant
       - LeafyPlantSeed
       - med_Squirrel
   - name: biomes/Forest/Metal
     weight: 2
     tags:
       - Oxyfern
-      - LeafyPlant        
+      - LeafyPlant
       - LeafyPlantSeed
-      - forestCluster_BasicSingleHarvestPlantSeed
+      - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
 tags:
   - StartWorld

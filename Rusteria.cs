@@ -85,8 +85,8 @@ namespace Rusteria
     {
         // liquid ethanol
         public const string EthId = "liquid_ethanol";
-        public static string EthName = UI.FormatAsLink("Chilled Ethanol Geyser", $"GeyserGeneric_{EthId.ToUpper()}");
-        public static string EthDescription = $"A highly pressurized geyser that periodically erupts with {UI.FormatAsLink("Chilled Ethanol", "ETHANOL")}.";
+        public static string EthName = UI.FormatAsLink("Ethanol Geyser", $"GeyserGeneric_{EthId.ToUpper()}");
+        public static string EthDescription = $"A highly pressurized geyser that periodically erupts with {UI.FormatAsLink("Liquid Ethanol", "ETHANOL")}.";
 
         // liquid chlorine
         public const string ChlId = "liquid_chlorine";

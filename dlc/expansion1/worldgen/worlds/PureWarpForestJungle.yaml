@@ -41,9 +41,9 @@ subworldFiles:
 #  - name: expansion1::subworlds/forest/med_ForestSurface
 #  - name: subworlds/forest/ForestMiniWater
   - name: subworlds/forest/Forest
-  - name: expansion1::subworlds/forest/med_Forest
+#  - name: expansion1::subworlds/forest/med_Forest
   - name: subworlds/jungle/Jungle
-  - name: expansion1::subworlds/jungle/JungleGassy
+#  - name: expansion1::subworlds/jungle/JungleGassy
   - name: expansion1::subworlds/forest/med_ForestHot
   - name: expansion1::subworlds/jungle/JungleSteamy
   - name: expansion1::subworlds/magma/BottomSmall

@@ -22,11 +22,17 @@ namespace Rusteria
     {
 
         // Rusteria Cluster
-        public static LocString CLUSTER_NAME = "Rusteria";
+        public static LocString CLUSTER_NAME = "Rustia";
         public static LocString CLUSTER_DESC = "A chilly start with fewer nearby resources.";
+        // Mini Rusteria Cluster
+        public static LocString MINI_CLUSTER_NAME = "Mini Rustia";
+        public static LocString MINI_CLUSTER_DESC = "A tiny rusty starting world, with no large planetoids but many small ones.";
         // Rusteria itself
         public static LocString RUSTERIA_NAME = "Rust Moonlet";
-        public static LocString RUSTERIA_DESC = "A small, cold world composed mostly of rust.\n\nRust worlds require brisk planning and careful temperature management to maintain adequate food production.";
+        public static LocString RUSTERIA_DESC = "A small, cold world composed mostly of rust.\n\nRust worlds require brisk planning and careful temperature management to sustain life.";
+        // Rusteria Mini
+        public static LocString RUSTERIA_MINI_NAME = "Mini Rust Moonlet";
+        public static LocString RUSTERIA_MINI_DESC = "A tiny, cold ball of rust and uranium.\n\nRust worlds require brisk planning and careful temperature management to sustain life.";
         // Pure Sandstone Moonlet
         public static LocString PURESANDSTONEMOONLET_NAME = "Sandstone Asteroid";
         public static LocString PURESANDSTONEMOONLET_DESC = "A small habitable world.\n\nSandstone Moonlets contain several resources conducive to healthy, happy duplicant life.";
@@ -51,9 +57,17 @@ namespace Rusteria
             Strings.Add($"STRINGS.CLUSTER_NAMES.RUSTERIA.NAME", CLUSTER_NAME);
             Strings.Add($"STRINGS.CLUSTER_NAMES.RUSTERIA.DESCRIPTION", CLUSTER_DESC);
 
+            // Mini Rusteria Cluster
+            Strings.Add($"STRINGS.CLUSTER_NAMES.RUSTERIA_MINI.NAME", MINI_CLUSTER_NAME);
+            Strings.Add($"STRINGS.CLUSTER_NAMES.RUSTERIA_MINI.DESCRIPTION", MINI_CLUSTER_DESC);
+
             // Rusteria itself
             Strings.Add($"STRINGS.WORLDS.RUSTERIA.NAME", RUSTERIA_NAME);
             Strings.Add($"STRINGS.WORLDS.RUSTERIA.DESCRIPTION", RUSTERIA_DESC);
+
+            // Rusteria mini
+            Strings.Add($"STRINGS.WORLDS.RUSTERIA_MINI.NAME", RUSTERIA_MINI_NAME);
+            Strings.Add($"STRINGS.WORLDS.RUSTERIA_MINI.DESCRIPTION", RUSTERIA_MINI_DESC);
 
             // Pure Sandstone Moonlet
             Strings.Add($"STRINGS.WORLDS.PURESANDSTONEMOONLET.NAME", PURESANDSTONEMOONLET_NAME);

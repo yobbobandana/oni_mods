@@ -19,10 +19,8 @@ biomes:
       - med_BasicSingleHarvestPlant
       - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
-      - med_LightBug
       - LeafyPlant
       - LeafyPlantSeed
-      - med_Squirrel
   - name: biomes/Forest/Basic
     weight: 2
     tags:
@@ -31,10 +29,8 @@ biomes:
       - med_BasicSingleHarvestPlant
       - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
-      - med_LightBug
       - LeafyPlant
       - LeafyPlantSeed
-      - med_Squirrel
   - name: biomes/Forest/Metal
     weight: 2
     tags:

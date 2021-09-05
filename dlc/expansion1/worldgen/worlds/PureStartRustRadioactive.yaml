@@ -6,17 +6,22 @@ disableWorldTraits: true
 
 worldsize:
   X: 144
-  Y: 248
+  Y: 232
 layoutMethod: PowerTree
 
 defaultsOverrides:
   data:
-    OverworldDensityMin: 16
-    OverworldDensityMax: 16
+    DrawWorldBorderOverVacuum: false
+    DrawWorldBorder: true
+    WorldBorderThickness: 5
+    WorldBorderRange: 2
+    OverworldDensityMin: 22
+    OverworldDensityMax: 22
+    OverworldAvoidRadius: 5
     OverworldSampleBehaviour: PoissonDisk
   startingWorldElements: [] # remove the algae check
 
-startSubworldName: expansion1::subworlds/forest/med_ForestStart
+startSubworldName: expansion1::subworlds/forest/tiny_ForestStart
 startingBaseTemplate: bases/forestBase
 startingBasePositionHorizontal:
   min: 0.5
@@ -31,8 +36,9 @@ fixedTraits:
 
 # List all the subworld files to load
 subworldFiles:
-  - name: expansion1::subworlds/forest/med_ForestStart
+  - name: expansion1::subworlds/forest/tiny_ForestStart
   - name: subworlds/space/Space
+  - name: expansion1::subworlds/space/SpaceWithMaficBorder
   - name: expansion1::subworlds/space/HospitableSurface
   - name: expansion1::subworlds/rust/med_Rust
   - name: subworlds/rust/RustFrozen
@@ -47,32 +53,35 @@ subworldFiles:
     minCount: 2
 
 unknownCellsAllowedSubworlds:
+  # by default sprinkle cool rust and cold rust.
   - tagcommand: Default
     command: Replace
     subworldNames:
       - expansion1::subworlds/rust/med_Rust
       - subworlds/rust/RustFrozen
-  - tagcommand: DistanceFromTag # two tall space
+  # space
+  - tagcommand: DistanceFromTag
     tag: AtSurface
-    minDistance: 0
-    maxDistance: 1
     command: Replace
     subworldNames:
       - subworlds/space/Space
-  - tagcommand: DistanceFromTag # surface under space
+  # second space, with mafic and regolith border
+  - tagcommand: DistanceFromTag
     tag: AtSurface
-    minDistance: 2
-    maxDistance: 2
+    minDistance: 1
+    maxDistance: 1
     command: Replace
     subworldNames:
-      - expansion1::subworlds/space/HospitableSurface
-  - tagcommand: DistanceFromTag # Ring-1 around start
+      - expansion1::subworlds/space/SpaceWithMaficBorder
+  # no cold rust next to start, only cool rust
+  - tagcommand: DistanceFromTag
     tag: AtStart
     minDistance: 1
     maxDistance: 1
     command: Replace
     subworldNames:
       - expansion1::subworlds/rust/med_Rust
+  # second from bottom - some cold rust and uranium
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 2
@@ -82,6 +91,7 @@ unknownCellsAllowedSubworlds:
       - expansion1::subworlds/rust/med_Rust
       - subworlds/rust/RustFrozen
       - expansion1::subworlds/radioactive/med_Radioactive
+  # first from bottom - all cold rust and uranium
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 1
@@ -91,6 +101,7 @@ unknownCellsAllowedSubworlds:
       - subworlds/rust/RustFrozen
       - expansion1::subworlds/radioactive/med_Radioactive
       - expansion1::subworlds/radioactive/med_UraniumFields
+  # bottom - frozen core and nonliving uranium biome
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 0

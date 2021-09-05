@@ -40,8 +40,8 @@ subworldFiles:
   - name: expansion1::subworlds/space/SpaceWithBorder
 #  - name: expansion1::subworlds/forest/med_ForestSurface
 #  - name: subworlds/forest/ForestMiniWater
-  - name: subworlds/forest/Forest
-#  - name: expansion1::subworlds/forest/med_Forest
+#  - name: subworlds/forest/Forest
+  - name: expansion1::subworlds/forest/med_Forest
   - name: subworlds/jungle/Jungle
 #  - name: expansion1::subworlds/jungle/JungleGassy
   - name: expansion1::subworlds/forest/med_ForestHot
@@ -53,8 +53,8 @@ unknownCellsAllowedSubworlds:
   - tagcommand: Default
     command: Replace
     subworldNames:
-      - subworlds/forest/Forest
-#      - expansion1::subworlds/forest/med_Forest
+#      - subworlds/forest/Forest
+      - expansion1::subworlds/forest/med_Forest
       - subworlds/jungle/Jungle
 #      - expansion1::subworlds/jungle/JungleGassy
   # Space

@@ -8,7 +8,7 @@ MobLookupTable:
       location: Solid
       selectMethod: Centroid
       density:
-        min: 0.02
+        min: 0.025
         max: 0.03
       width: 1
       height: 1

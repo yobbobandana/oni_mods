@@ -11,6 +11,9 @@ Features:
  * an expanded starmap: 15 rings in stead of 11
  * two new geyers: liquid ethanol, liquid chlorine, both guaranteed in the starting world.
 
+Known Issues:
+ * asteroid art is incorrect, in size and content - help wanted as i do not want to deal with art and animations
+
 The initial world is primarily rust, with a small forest start to get you going. The teleporter expansion contains no oil, but does provide biological alternatives for some tasks. The first asteroid accessible by rocketry is difficult to get a foothold on, but once settled should provide a solid base for industry.
 
 To support the rust-based start, two new geyser types are included: a liquid ethanol geyser and a liquid chlorine geyser. At least one of each is guaranteed on the starting world. The ethanol geyser, along with significant existing reserves of standing ethanol, should make nosh-based food production viable.

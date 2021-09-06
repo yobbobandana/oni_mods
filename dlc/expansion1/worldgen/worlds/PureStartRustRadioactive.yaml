@@ -22,7 +22,7 @@ defaultsOverrides:
   startingWorldElements: [] # remove the algae check
 
 startSubworldName: expansion1::subworlds/forest/tiny_ForestStart
-startingBaseTemplate: bases/forestBase
+startingBaseTemplate: bases/tiny_forestBase
 startingBasePositionHorizontal:
   min: 0.5
   max: 0.5

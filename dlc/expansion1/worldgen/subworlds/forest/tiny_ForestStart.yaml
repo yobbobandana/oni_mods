@@ -16,6 +16,7 @@ biomes:
     tags:
       - med_Oxyfern
       - ForestTree
+      - ForestTreeSeed
       - med_BasicSingleHarvestPlant
       - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
@@ -31,12 +32,14 @@ biomes:
       - med_ForestForagePlantPlanted
       - LeafyPlant
       - LeafyPlantSeed
+      - ForestTreeSeed
   - name: biomes/Forest/Metal
     weight: 2
     tags:
       - Oxyfern
       - LeafyPlant
       - LeafyPlantSeed
+      - ForestTreeSeed
       - tiny_BasicSingleHarvestPlantSeed
       - med_ForestForagePlantPlanted
 tags:

@@ -22,10 +22,10 @@ namespace Rusteria
     {
 
         // Rusteria Cluster
-        public static LocString CLUSTER_NAME = "Rustia";
+        public static LocString CLUSTER_NAME = "Pure Rust";
         public static LocString CLUSTER_DESC = "A chilly start with fewer nearby resources.";
         // Mini Rusteria Cluster
-        public static LocString MINI_CLUSTER_NAME = "Mini Rustia";
+        public static LocString MINI_CLUSTER_NAME = "Pure Rust Mini";
         public static LocString MINI_CLUSTER_DESC = "A tiny rusty starting world, with no large planetoids but many small ones.";
         // Rusteria itself
         public static LocString RUSTERIA_NAME = "Rust Moonlet";

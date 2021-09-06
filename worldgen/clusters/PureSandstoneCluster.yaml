@@ -47,7 +47,7 @@ skip: EditorOnly
 startWorldIndex: 0
 numRings: 12
 worldPlacements:
-- world: expansion1::worlds/PureTerra
+- world: worlds/PureTerra
   buffer: 2
   allowedRings:
     min: 0

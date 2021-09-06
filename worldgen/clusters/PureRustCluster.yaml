@@ -1,17 +1,17 @@
-name: STRINGS.CLUSTER_NAMES.RUSTERIA_MINI.NAME
-description: STRINGS.CLUSTER_NAMES.RUSTERIA_MINI.DESCRIPTION
+name: STRINGS.CLUSTER_NAMES.RUSTERIA.NAME
+description: STRINGS.CLUSTER_NAMES.RUSTERIA.DESCRIPTION
 requiredDlcId: EXPANSION1_ID
-coordinatePrefix: PM-RUST-C
-menuOrder: 7
+coordinatePrefix: P-RUST-C
+menuOrder: 6
 clusterCategory: 2
 difficulty: 4
 
 # starting asteroid:
-#   mafic regolith border > rust > uranium/rust > uranium/ice
+#   space > cold barren > rust > uranium/rust > uranium/ice
 # warp expansion:
-#   amalgam border > forest/jungle > magma
+#   gold amalgam border > forest/jungle > magma
 # rocket expansion:
-#   ocean > ocean/cold oil > hot ocean/oil > oil/magma > magma
+#   salt border > ocean > ocean/cold oil > hot ocean/oil > oil/magma > magma
 # asteroids:
 #   same as usual +
 #   sandstone, swamp/marsh, wasteland
@@ -19,34 +19,34 @@ difficulty: 4
 startWorldIndex: 0
 numRings: 16
 worldPlacements:
-- world: expansion1::worlds/PureStartMiniRustRadioactive
+- world: worlds/PureStartRustRadioactive
   buffer: 2
   allowedRings:
     min: 0
     max: 0
-- world: expansion1::worlds/PureRocketOceanOil # Rocket world
+- world: worlds/PureRocketOceanOil # Rocket world
   buffer: 2
   allowedRings:
     min: 3
     max: 3
-- world: expansion1::worlds/PureWarpForestJungle # Warp world
+- world: worlds/PureWarpForestJungle # Warp world
   buffer: 2
   allowedRings:
     min: 5
     max: 6
 # Inner Worlds
-- world: expansion1::worlds/PureAsteroidSandstone
+- world: worlds/PureAsteroidSandstone
   buffer: 2
   allowedRings:
     min: 3
     max: 6
-- world: expansion1::worlds/PureAsteroidWasteland
+- world: worlds/PureAsteroidWasteland
   buffer: 3
   allowedRings:
     min: 4
     max: 7
 # Middle Worlds
-- world: expansion1::worlds/PureAsteroidSwampMarsh
+- world: worlds/PureAsteroidSwampMarsh
   buffer: 3
   allowedRings:
     min: 4

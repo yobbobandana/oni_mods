@@ -1,34 +1,36 @@
-name: STRINGS.WORLDS.RUSTERIA.NAME
-description: STRINGS.WORLDS.RUSTERIA.DESCRIPTION
+name: STRINGS.WORLDS.RUSTERIA_MINI.NAME
+description: STRINGS.WORLDS.RUSTERIA_MINI.DESCRIPTION
 nameTable: TUNDRA
 asteroidIcon: asteroid_swamp_rocket_kanim
 disableWorldTraits: true
 
+# note: the game crashes after generation if height is less than 175 or so.
+# i would make it smaller and remove the third uranium layer if i could.
 worldsize:
-  X: 144
-  Y: 232
+  X: 128
+  Y: 175
 layoutMethod: PowerTree
 
 defaultsOverrides:
   data:
     DrawWorldBorderOverVacuum: false
     DrawWorldBorder: true
-    WorldBorderThickness: 5
+    WorldBorderThickness: 3
     WorldBorderRange: 2
-    OverworldDensityMin: 22
-    OverworldDensityMax: 22
+    OverworldDensityMin: 16
+    OverworldDensityMax: 16
     OverworldAvoidRadius: 5
     OverworldSampleBehaviour: PoissonDisk
   startingWorldElements: [] # remove the algae check
 
-startSubworldName: expansion1::subworlds/forest/tiny_ForestStart
+startSubworldName: subworlds/forest/tiny_ForestStart
 startingBaseTemplate: bases/tiny_forestBase
 startingBasePositionHorizontal:
   min: 0.5
   max: 0.5
 startingBasePositionVertical:
-  min: 0.46
-  max: 0.46
+  min: 0.54
+  max: 0.54
 
 fixedTraits:
   - sunlightVeryLow
@@ -36,10 +38,9 @@ fixedTraits:
 
 # List all the subworld files to load
 subworldFiles:
-  - name: expansion1::subworlds/forest/tiny_ForestStart
+  - name: subworlds/forest/tiny_ForestStart
   - name: subworlds/space/Space
-  - name: expansion1::subworlds/space/SpaceWithMaficBorder
-  - name: expansion1::subworlds/space/HospitableSurface
+  - name: subworlds/space/SpaceWithMaficBorder
   - name: expansion1::subworlds/rust/med_Rust
   - name: subworlds/rust/RustFrozen
     minCount: 1
@@ -53,35 +54,32 @@ subworldFiles:
     minCount: 2
 
 unknownCellsAllowedSubworlds:
-  # by default sprinkle cool rust and cold rust.
   - tagcommand: Default
     command: Replace
     subworldNames:
       - expansion1::subworlds/rust/med_Rust
       - subworlds/rust/RustFrozen
-  # space
-  - tagcommand: DistanceFromTag
+  - tagcommand: DistanceFromTag # space 0
     tag: AtSurface
+#    minDistance: 0
+#    maxDistance: 0
     command: Replace
     subworldNames:
       - subworlds/space/Space
-  # second space, with mafic and regolith border
-  - tagcommand: DistanceFromTag
+  - tagcommand: DistanceFromTag # space with a sandy border
     tag: AtSurface
     minDistance: 1
     maxDistance: 1
     command: Replace
     subworldNames:
-      - expansion1::subworlds/space/SpaceWithMaficBorder
-  # no cold rust next to start, only cool rust
-  - tagcommand: DistanceFromTag
+      - subworlds/space/SpaceWithMaficBorder
+  - tagcommand: DistanceFromTag # Ring-1 around start
     tag: AtStart
     minDistance: 1
     maxDistance: 1
     command: Replace
     subworldNames:
       - expansion1::subworlds/rust/med_Rust
-  # second from bottom - some cold rust and uranium
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 2
@@ -91,7 +89,6 @@ unknownCellsAllowedSubworlds:
       - expansion1::subworlds/rust/med_Rust
       - subworlds/rust/RustFrozen
       - expansion1::subworlds/radioactive/med_Radioactive
-  # first from bottom - all cold rust and uranium
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 1
@@ -101,7 +98,6 @@ unknownCellsAllowedSubworlds:
       - subworlds/rust/RustFrozen
       - expansion1::subworlds/radioactive/med_Radioactive
       - expansion1::subworlds/radioactive/med_UraniumFields
-  # bottom - frozen core and nonliving uranium biome
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 0
@@ -114,7 +110,7 @@ unknownCellsAllowedSubworlds:
 worldTemplateRules:
   # ethanol geysers don't exist in stock, so had to be coded in.
   # adapted code from https://github.com/daviscook477/ONI-Mods/tree/master/src/EthanolGeyser
-  # one liquid ethanol nearby
+  # one liquid ethanol, not too far away
   - names:
       - geysers/liquid_ethanol
     listRule: GuaranteeOne
@@ -124,8 +120,10 @@ worldTemplateRules:
         tagcommand: DistanceFromTag
         tag: AtStart
         minDistance: 1
-        maxDistance: 1
-  # p-water also nearby
+        maxDistance: 2
+      - command: IntersectWith
+        zoneTypes: [ Rust ]
+  # one p-water, not too far away
   - names:
       - geysers/slush_water
       - geysers/filthy_water
@@ -137,6 +135,26 @@ worldTemplateRules:
         tag: AtStart
         minDistance: 1
         maxDistance: 2
+      - command: IntersectWith
+        zoneTypes: [ Rust ]
+  # teleporters
+  - names:
+    - expansion1::poi/warp/sender
+    - expansion1::poi/warp/receiver
+    - expansion1::poi/warp/teleporter
+    listRule: GuaranteeAll
+    priority: 120
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 1
+        maxDistance: 2
+      - command: IntersectWith
+        zoneTypes: [ Rust ]
+      - command: ExceptWith
+        tagcommand: AtTag
+        tag: NoGravitasFeatures
   # liquid chlorine... except it doesn't exist? what?
   # so i had to mod it in... not as easy as one might expect.
   - names:
@@ -146,12 +164,14 @@ worldTemplateRules:
     allowedCellsFilter:
       - command: Replace
         zoneTypes: [Radioactive]
-  # one liquid ethanol anywhere
+  # some sort of hot thing
   - names:
-      - geysers/liquid_ethanol
+      - geysers/steam
+      - geysers/hot_steam
+      - geysers/methane
+      - geysers/hot_hydrogen
     listRule: GuaranteeOne
-    priority: 100
-    allowDuplicates: true
+    priority: 90
     allowedCellsFilter:
       - command: Replace
         zoneTypes: [Rust]
@@ -160,10 +180,8 @@ worldTemplateRules:
       - expansion1::poi/radioactive/uranium_fields_liquid_co2_geyser
       - expansion1::poi/radioactive/uranium_fields_liquid_co2_geyser_b
       - expansion1::poi/radioactive/uranium_fields_liquid_co2_geyser_c
-    listRule: GuaranteeSomeTryMore
-    someCount: 1
-    moreCount: 1
-    priority: 100
+    listRule: TryOne
+    priority: 10
     allowExtremeTemperatureOverlap: true # This is acceptable
     allowedCellsFilter:
       - command: Replace
@@ -172,34 +190,6 @@ worldTemplateRules:
         subworldNames:
           - expansion1::subworlds/radioactive/med_UraniumFields
           - expansion1::subworlds/radioactive/med_FrozenUraniumFields
-  # a steam geyser
-  - names:
-      - geysers/steam
-      - geysers/hot_steam
-    listRule: GuaranteeOne
-    priority: 100
-    allowedCellsFilter:
-      - command: Replace
-        zoneTypes: [Rust]
-  # one natgas or hydrogen
-  - names:
-      - geysers/methane
-      - geysers/hot_hydrogen
-    listRule: GuaranteeOne
-    priority: 100
-    allowedCellsFilter:
-      - command: Replace
-        zoneTypes: [Rust]
-  # one p-water or salt water
-  - names:
-      - geysers/slush_water
-      - expansion1::geysers/slush_salt_water
-    listRule: GuaranteeOne
-    allowDuplicates: true
-    priority: 100
-    allowedCellsFilter:
-      - command: Replace
-        zoneTypes: [Rust]
   # Curated Geysers
   - names:
     - geysers/steam
@@ -213,14 +203,14 @@ worldTemplateRules:
     - expansion1::geysers/liquid_sulfur
     - expansion1::geysers/slush_salt_water
     listRule: TryOne
-    times: 3
-    allowDuplicates: true
+    times: 2
+#    allowDuplicates: true
     priority: 10
     allowedCellsFilter:
       - command: Replace
         tagcommand: DistanceFromTag
         tag: AtStart
-        minDistance: 2
+        minDistance: 1
         maxDistance: 10
       - command: ExceptWith
         zoneTypes: [ Space ]
@@ -229,31 +219,14 @@ worldTemplateRules:
         tag: NoGlobalFeatureSpawning
   # Gravitas
   - names:
-    - expansion1::poi/warp/sender
-    - expansion1::poi/warp/receiver
-    - expansion1::poi/warp/teleporter
-    listRule: GuaranteeAll
-    priority: 90
+    - expansion1::poi/genericGravitas/poi_office
+    listRule: TryOne
+    priority: 40
     allowedCellsFilter:
       - command: Replace
         tagcommand: DistanceFromTag
         tag: AtStart
         minDistance: 1
-        maxDistance: 2
-      - command: IntersectWith
-        zoneTypes: [ Rust ]
-      - command: ExceptWith
-        tagcommand: AtTag
-        tag: NoGravitasFeatures
-  - names:
-    - expansion1::poi/genericGravitas/poi_office
-    listRule: GuaranteeAll
-    priority: 90
-    allowedCellsFilter:
-      - command: Replace
-        tagcommand: DistanceFromTag
-        tag: AtStart
-        minDistance: 2
         maxDistance: 99
       - command: ExceptWith
         tagcommand: AtTag

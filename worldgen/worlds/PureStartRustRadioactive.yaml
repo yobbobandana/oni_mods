@@ -39,7 +39,6 @@ subworldFiles:
   - name: subworlds/forest/tiny_ForestStart
   - name: subworlds/space/Space
   - name: subworlds/space/SpaceWithMaficBorder
-  - name: expansion1::subworlds/space/HospitableSurface
   - name: expansion1::subworlds/rust/med_Rust
   - name: subworlds/rust/RustFrozen
     minCount: 1

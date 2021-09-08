@@ -5,14 +5,12 @@ using STRINGS;
 
 namespace Rusteria
 {
-    // this just does the default thing for now
+    // this just does the default thing
     public class Rusteria : UserMod2
     {
         public override void OnLoad(Harmony harmony)
         {
             base.OnLoad(harmony);
-            //PUtil.InitLibrary();
-            //new PLocalization().Register();
         }
     }
 
@@ -22,10 +20,10 @@ namespace Rusteria
     {
 
         // Rusteria Cluster
-        public static LocString CLUSTER_NAME = "Pure Rust";
+        public static LocString CLUSTER_NAME = "Pure Rust Cluster";
         public static LocString CLUSTER_DESC = "A chilly start with fewer nearby resources.";
         // Mini Rusteria Cluster
-        public static LocString MINI_CLUSTER_NAME = "Pure Rust Mini";
+        public static LocString MINI_CLUSTER_NAME = "Pure Rust Cluster Mini";
         public static LocString MINI_CLUSTER_DESC = "A tiny rusty starting world, with no large planetoids but many small ones.";
         // Rusteria itself
         public static LocString RUSTERIA_NAME = "Rust Moonlet";
@@ -115,9 +113,10 @@ namespace Rusteria
             Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{ChlId.ToUpper()}.NAME", ChlName);
             Strings.Add($"STRINGS.CREATURES.SPECIES.GEYSER.{ChlId.ToUpper()}.DESC", ChlDescription);
 
+            // ethanol geyser uses cool p-water animations for now
             __result.Add(new GeyserGenericConfig.GeyserPrefabParams("geyser_liquid_water_slush_kanim", 4, 2, new GeyserConfigurator.GeyserType(EthId, SimHashes.Ethanol, 263.15f, 1000f, 2000f, 500f, 60f, 1140f, 0.1f, 0.9f, 15000f, 135000f, 0.4f, 0.8f)));
+            // chlorine geyser uses infectious p-water animations for now
             __result.Add(new GeyserGenericConfig.GeyserPrefabParams("geyser_liquid_water_filthy_kanim", 4, 2, new GeyserConfigurator.GeyserType(ChlId, SimHashes.Chlorine, 203.15f, 100f, 200f, 500f, 60f, 1140f, 0.1f, 0.9f, 15000f, 135000f, 0.4f, 0.8f)));
         }
     }
-
 }

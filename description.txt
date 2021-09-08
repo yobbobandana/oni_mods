@@ -1,27 +1,33 @@
-A starting world composed mainly of rust, and a supporting Spaced Out asteroid cluster.
+A full new cluster with Rust-based starting planet, and several unique features.
 
-The starting world and the nearby planetoids all have fewer biomes than usual, but there are more asteroids floating in space to compensate.
+Two starts are provided, one with a medium rusty planetoid comparable in size to an ordinary Spaced Out style start. The other start is small-sized but otherwise similar, comparable in size to the teleporter and crashed satellite planetoids.
 
-This is a difficult starting scenario. Food will be hard to come by, and temperature management is crucial. Nearby asteroids may lack the resources you are used to, and significant rocket-based exploration will be required to obtain all the usual biomes.
+This is a somewhat difficult starting scenario, best for experienced players or those seeking a challenge.
 
-Features:
+Both clusters are found in the "Spaced Out" menu (not "Classic").
+
+Key features:
  * a new starting planetoid, consisting mostly of rust.
- * fewer biomes in the teleporter and crashed satellite worlds
+ * an optional mini-sized start, for an even more Spaced Out feel. Also good for that old weak laptop you really shouldn't be playing ONI on.
+ * overhauled teleporter and rocket planetoids specifically for this cluster.
  * new tiny asteroids: sandstone, wasteland, and swampy marsh.
+ * new geysers: liquid ethanol and liquid chlorine, both guaranteed in the starting world.
  * an expanded starmap: 15 rings in stead of 11
- * two new geyers: liquid ethanol, liquid chlorine, both guaranteed in the starting world.
 
-Known Issues:
- * asteroid art is incorrect, in size and content - help wanted as i do not want to deal with art and animations
+I started this to test the possibility of a single-biome starting planet, and was pleasantly surprised with the result. Try it out and let me know what you think!
 
-The initial world is primarily rust, with a small forest start to get you going. The teleporter expansion contains no oil, but does provide biological alternatives for some tasks. The first asteroid accessible by rocketry is difficult to get a foothold on, but once settled should provide a solid base for industry.
+The starting world and the initial teleporter and rocket expansions have all been completely rewritten. The biggest change is that biome density is reduced, with the starting world having only one primary biome, and no planetoid having more than two. This encourages the player to utilize the resouces available, in this case a stupid amount of ethanol and rust, and also to fly, explore, and ship resources between planetoids.
 
-To support the rust-based start, two new geyser types are included: a liquid ethanol geyser and a liquid chlorine geyser. At least one of each is guaranteed on the starting world. The ethanol geyser, along with significant existing reserves of standing ethanol, should make nosh-based food production viable.
+Combined with a greatly increased starmap size (feedback needed), it gives a much more "spaced out" Spaced Out than anything yet shipped with the DLC.
 
-New small asteroids have been created to provide the critters and plants that would 
-normally be available from the initial three asteroids but now are not. These are facilitated by an expanded starmap, with 15 rings in stead of the standard 11. This includes the DLC lifeforms such as grubfruit and plug slugs. They should be able to be found early on, not too distant from the starting planetoid.
+Even though these worlds have reduced size, the reduced biome density makes them feel larger with fewer barriers to expansion. Try the medium-sized one if you like building a large primary base, and try the mini-sized one for a spread-out cluster of bases.
 
-I originally created this scenario to explore the possibility of single-biome worlds. Although the starting planetoid is slightly smaller than in the stock Spaced Out starts, it should feel less cramped and provide an interesting challenge, while staying true to the Spaced Out ideal.
 
-source: ...
-copyright: do what you want with it license
+Known issues:
+ * the asteroid images on the starmap and in the main menu are not quite correct. Any help is welcome here.
+ * it still needs playtesting. Feedback is welcome.
+
+Source code and manual install: github
+
+Feedback: either here or on github
+

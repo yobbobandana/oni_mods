@@ -1,3 +1,4 @@
 PureRust.dll
-!release/PureRust.dll
+!dev_release/PureRust.dll
+steam_release
 lib

@@ -1,0 +1,4 @@
+supportedContent: ALL|VANILLA_ID|EXPANSION1_ID
+minimumSupportedBuild: 0
+version: 0.1
+APIVersion: 2

@@ -90,4 +90,61 @@ namespace LinuxSunlightFix
             return true;
         }
     }
+
+    // -----------------------------
+    // a patch to fix the biome tint
+    // -----------------------------
+    // (disabled because it caused another problem)
+    
+    /*
+    [HarmonyPatch(typeof(SubworldZoneRenderData))]
+    [HarmonyPatch("OnActiveWorldChanged")]
+    public class LinuxBiomeTint_Patch
+    {
+        // modify the tint after the standard calculations
+        public static void Postfix(ref SubworldZoneRenderData __instance)
+        {
+            // private fields
+            var colourTexRefl = typeof(SubworldZoneRenderData).GetField("colourTex", BindingFlags.Instance | BindingFlags.NonPublic);
+            var indexTexRefl = typeof(SubworldZoneRenderData).GetField("indexTex", BindingFlags.Instance | BindingFlags.NonPublic);
+            Texture2D colourTex = (Texture2D)colourTexRefl.GetValue(__instance);
+            Texture2D indexTex = (Texture2D)indexTexRefl.GetValue(__instance);
+            // as raw data
+            byte[] rawColourData = colourTex.GetRawTextureData();
+            byte[] rawIndexData = indexTex.GetRawTextureData();
+            
+            // mirror the image data vertically
+            int H = Grid.HeightInCells;
+            int halfH = H / 2;
+            int W = Grid.WidthInCells;
+            for (int x = 0; x < W; x++)
+            {
+                for (int y = 0; y < halfH; y++)
+                {
+                    // calculate byte offsets of the pixels to swap.
+                    // format is 3-bytes per pixel RGB.
+                    int pos1 = ((y * W) + x) * 3;
+                    int pos2 = (((H - 1 - y) * W) + x) * 3;
+                    // swap the bytes
+                    byte cache;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        cache = rawColourData[pos1];
+                        rawColourData[pos1] = rawColourData[pos2];
+                        rawColourData[pos2] = cache;
+                        pos1++; pos2++;
+                    }
+                }
+            }
+            
+            // upload the modified data to the GPU
+            colourTex.LoadRawTextureData(rawColourData);
+            indexTex.LoadRawTextureData(rawIndexData);
+            colourTex.Apply();
+            indexTex.Apply();
+            // call the appropriate method to notify of the update
+            typeof(SubworldZoneRenderData).GetMethod("OnShadersReloaded", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, null);
+        }
+    }
+    */
 }

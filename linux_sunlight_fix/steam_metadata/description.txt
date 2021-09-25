@@ -1,0 +1,9 @@
+A fix for severe sunlight-related graphical glitches on Linux. It might also work on MacOS, if the problem also exists there.
+
+This fixes two severe graphical bugs on Linux.
+[olist]
+ [*] Sunlight appearing at the bottom of the world.
+ [*] Crazy flickering after reloading a game.
+[/olist]
+
+A fix for this is apparently in the works on Klei's end, but until then you can just enable this mod.

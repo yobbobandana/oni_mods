@@ -1,0 +1,9 @@
+Includes important information about the properties of the material you are building with, right there in the material selection panel. Thermal Conductivity, Specific Heat Capacity, and Melting Point are all displayed.
+
+This should work in any language and with any temperature units, as i just used the game's existing formatting system.
+
+Note that this functionality is also included in the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1983504552]Thermal Tooltips[/url] mod, so if you have that one, you don't need this!
+
+And yes, gold, in real life, melts at 1337 kelvin.
+
+It is the most elite of all metals.

@@ -91,8 +91,8 @@ namespace AutomaticGeyserCalculation
         
         // Steam Turbine Calculation
         public static LocString SteamTurbinePower = "This amount of heat energy could fully power {0:N1} steam turbines, if directed appropriately";
-        public static LocString SteamTurbineRestricted = "At this rate the geyser can directly feed {0:N1} steam turbines restricted to {1} open vents each";
-        public static LocString SteamTurbineUnrestricted = "At this rate the geyser can directly feed {0:N1} steam turbines";
+        public static LocString SteamTurbineRestricted = "Steam output during this period can directly feed {0:N1} steam turbines restricted to {1} open vents each";
+        public static LocString SteamTurbineUnrestricted = "Steam output during this period can directly feed {0:N1} steam turbines";
         public static LocString SteamTurbineColdWarning = "The output of this geyser is cold and will require heating";
         public static LocString SteamTurbineHotWarning = "The output of this geyser is hot and some energy may be wasted";
         

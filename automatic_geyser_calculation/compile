@@ -1,0 +1,22 @@
+#!/bin/sh
+# the name of this mod
+NAME=AutomaticGeyserCalculation
+
+# the desired output dll
+OUTPUT_DLL="${NAME}.dll"
+
+# the input .cs file(s)
+INPUT_CS="${NAME}.cs"
+
+# the appropriate libraries
+LIBS="0Harmony.dll,Assembly-CSharp-firstpass.dll,UnityEngine.dll,Assembly-CSharp.dll,UnityEngine.CoreModule.dll"
+
+# where to find the libraries.
+# if a "lib" directory (or symlink) exists, it will be assumed to contain them.
+# otherwise the default Steam location will be used.
+DEFAULT_LIBDIR=~/".steam/steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded_Data/Managed/"
+if [ -f "lib" ]; then LIBDIR="lib/"; else LIBDIR="${DEFAULT_LIBDIR}"; fi
+
+# compile it
+set -x
+mcs -lib:"${LIBDIR}" -r:"${LIBS}" -t:library -out:"${OUTPUT_DLL}" "${INPUT_CS}"

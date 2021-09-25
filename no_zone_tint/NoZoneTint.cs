@@ -18,7 +18,7 @@ namespace NoZoneTint
     
     [HarmonyPatch(typeof(SubworldZoneRenderData))]
     [HarmonyPatch("GenerateTexture")]
-    public static class SubworldZoneRenderData_GenerateTexture_Patch
+    public static class ZoneTintPatch
     {
         public static void Prefix(ref SubworldZoneRenderData __instance)
         {

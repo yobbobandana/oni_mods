@@ -20,7 +20,7 @@ namespace MaterialSelectionProperties
     
     [HarmonyPatch(typeof(GameUtil))]
     [HarmonyPatch("GetSignificantMaterialPropertyDescriptors")]
-    public class GetSignificantMaterialPropertyDescriptors_Patch
+    public class MaterialPropertyInformationPatch
     {
         public static LocString StrengthText = "Material Strength: {0}";
         public static LocString StrengthTip = "Materials with low strength are more easily broken by liquid pressure.";

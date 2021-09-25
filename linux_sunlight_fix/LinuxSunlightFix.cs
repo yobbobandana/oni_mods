@@ -21,7 +21,7 @@ namespace LinuxSunlightFix
     
     [HarmonyPatch(typeof(PropertyTextures))]
     [HarmonyPatch("UpdateProperty")]
-    public class LinuxExposedSunlight_Patch
+    public class LinuxExposedSunlightPatch
     {
         // i have not found any way to use a private struct as a parameter type,
         // so i'll just duplicate it here.

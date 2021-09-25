@@ -93,7 +93,7 @@ namespace Rusteria
     // code adapted from https://github.com/daviscook477/ONI-Mods/tree/master/src/EthanolGeyser
     [HarmonyPatch(typeof(GeyserGenericConfig))]
     [HarmonyPatch("GenerateConfigs")]
-    public class GeyserGenericConfig_GenerateConfigs_Patch
+    public class MoreGeysersPatch
     {
         // liquid ethanol
         public const string EthId = "liquid_ethanol";

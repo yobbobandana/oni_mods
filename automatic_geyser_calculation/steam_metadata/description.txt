@@ -1,0 +1,25 @@
+Automatically calculates several useful quantities for every geyser. These values are added to the geyser's information panel.
+
+Calculated values:
+[list]
+  [*] average flow rates (active period only and full lifetime average)
+  [*] required buffer mass to maintain average flow rates
+  [*] thermal cooling capacity for geysers under 20°C
+  [*] thermal energy output for geysers above 95°C
+  [*] number of steam turbines potentially powered by heat output (in tooltip)
+  [*] for steam geysers specifically, how many turbines they can directly feed (in tooltip)
+[/list]
+
+I got tired of calculating these values by hand every time i wanted them, so i made a script to do it.
+
+Then i got tired of running that script every time i wanted these values, so i put it into the game.
+
+Now here it is! It's pretty straightforward, just adds the info to the details panel that appears when you click on a geyser. Some info will be hidden until the geyser is analyzed, so this doesn't give you any info you couldn't have worked out yourself.
+
+All values have explanatory tooltips, which i tried to make as clear as possible.
+
+Temperatures will of course be in your desired units: C, F or K.
+
+Steam turbine calculations are provided as part of the tooltip when hovering over the thermal information. They assume a desire for maximum power, and assume the turbine is externally cooled (or an aquatuner is used). If you prefer self-cooled setups, simply multiply the expected number of turbines by 3. I considered adding more info for steam turbine setups, but it got overcomplicated very quickly so i went with the basics here.
+
+As always, any feedback is welcome.

@@ -1,0 +1,9 @@
+This mod removes the biome-specific zone tinting of items, buildings and terrain, colouring materials the same way no matter where they are.
+
+The background colour of zones is unaffected, as that is a different thing.
+
+Most biomes still retain their unique colouring, as they almost always use materials of the appropriate color anyway. This just reduces the candy factor, and the jarring transition of material colours at biome borders.
+
+It also sidesteps a common rendering glitch where tint colours don't match the actual biome borders, as of course now nothing is tinted.
+
+Install if you dislike the oversaturated candy effect of the stock biome tinting, and  want your sandstone to look like sandstone no matter where it happens to be.

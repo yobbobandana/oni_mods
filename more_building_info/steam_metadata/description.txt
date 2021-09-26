@@ -1,0 +1,19 @@
+Adds a small amount of very useful information when constructing and selecting buildings.
+
+Selected buildings will now tell you their input requirements, not only their output/effects.
+
+When constructing, any room-relevant building traits are now listed among the effects. This includes traits such as "Industrial Machinery", "Flush Toilet", "Recreational Building", "Decor Item", and so on.
+
+There's not much more to it. I'm not really sure why this information is not consistently displayed in game. It's all available in one view or another. If i have to mod such sensibility in, then so be it.
+
+The full list of traits that will be shown:
+[list]
+ [*] Industrial Machinery
+ [*] Toilet
+ [*] Flush Toilet
+ [*] Wash Station
+ [*] Plumbed Wash Station
+ [*] Medical Equipment
+ [*] Decor Item
+ [*] Recreational Building
+[/list]

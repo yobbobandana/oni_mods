@@ -1,0 +1,25 @@
+#!/bin/sh
+# releases the specified mod files into a steam_release directory
+
+# files to release (doublequote anything with a space in the name)
+RELEASE_FILES='
+    mod.yaml
+    mod_info.yaml
+    MoreBuildingInfo.dll
+'
+
+# die if anything weird happens
+set -e
+
+# make sure we are in the right place
+cd "$(dirname "$0")"
+
+# first compile in case the script user forgot
+if [ -x compile ]; then ./compile; fi
+
+# clobber any existing release
+if [ -d steam_release ]; then rm -r steam_release; fi
+
+# make a new release
+mkdir steam_release
+cp -rv $RELEASE_FILES steam_release/

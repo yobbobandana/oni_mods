@@ -1,0 +1,7 @@
+Removes suit wear. Suits will always remain at 100% durability. They will no longer wear out and break.
+
+This is effectively the same as setting Durability to "Indestructible" in the custom game settings when starting a new game. But maybe when you were starting the game you forgot? Or you just didn't know? You can't change that setting now... but you [i]can[/i] add this mod.
+
+The mod can safely be added and removed with no other consequence. The setting will go back to whatever it was after uninstall. It just locks durability to 100% while enabled.
+
+Acknowledgements: Thanks to Sonia_k for discussion and image wrangling, and a special shout out to Astrologic for going 2000 cycles before noticing suit wear was a thing ;)

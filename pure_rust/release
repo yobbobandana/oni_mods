@@ -8,6 +8,7 @@ RELEASE_FILES='
     templates
     worldgen
     PureRust.dll
+    changelog.txt
 '
 
 # die if anything weird happens

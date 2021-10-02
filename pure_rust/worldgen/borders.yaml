@@ -8,4 +8,6 @@ add:
     - element: Regolith
       weight: 1
     - element: IronOre
-      weight: 0.5
+      weight: 0.4
+    - element: Carbon
+      weight: 0.1

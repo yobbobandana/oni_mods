@@ -1,4 +1,6 @@
 *.dll
 !*/dev_release/*.dll
 steam_release
+!*/archived_versions/*/steam_release
+!*/archived_versions/*/steam_release/*
 lib

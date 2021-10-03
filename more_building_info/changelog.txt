@@ -1,0 +1,3 @@
+v0.3: only display "Effects" header in info screen if there are requirements or room traits
+v0.2: support the previous stable version 479045
+v0.1: initial release

@@ -23,13 +23,3 @@ if [ -d steam_release ]; then rm -r steam_release; fi
 # make a new release
 mkdir steam_release
 cp -rv $RELEASE_FILES steam_release/
-
-# if there are any archived versions, copy them in as well
-if [ -d archived_versions ]; then
-    for DIR in archived_versions/*/; do
-        if [ -d "$DIR"steam_release ]; then
-            mkdir -p steam_release/"$DIR"
-            cp -rv "$DIR"steam_release/* steam_release/"$DIR"
-        fi
-    done
-fi

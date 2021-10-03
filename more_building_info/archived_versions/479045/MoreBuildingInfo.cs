@@ -17,6 +17,11 @@ namespace MoreBuildingInfo
     
     public static class Util
     {
+        
+        // This was only added recently in the public testing branch...
+        // adding the string in here for compatibility until that is released.
+        public static LocString INDUSTRIAL_MACHINERY = "Industrial Machinery";
+        
         // this is ugly but i don't really want to try to make it better.
         // it's used by both patches so i pulled it out here.
         // ref CodexEntryGenerator.GenerateBuildingDescriptionContainers.
@@ -34,9 +39,11 @@ namespace MoreBuildingInfo
                 "#a09038", // flush toilet
                 "#40a020" //decoration
             };
+            
+            
             Pair<Tag, string>[] array = new Pair<Tag, string>[8]
             {
-                new Pair<Tag, string>(RoomConstraints.ConstraintTags.IndustrialMachinery, CODEX.BUILDING_TYPE.INDUSTRIAL_MACHINERY),
+                new Pair<Tag, string>(RoomConstraints.ConstraintTags.IndustrialMachinery, INDUSTRIAL_MACHINERY),
                 new Pair<Tag, string>(RoomConstraints.ConstraintTags.RecBuilding, ROOMS.CRITERIA.REC_BUILDING.NAME),
                 new Pair<Tag, string>(RoomConstraints.ConstraintTags.Clinic, ROOMS.CRITERIA.CLINIC.NAME),
                 new Pair<Tag, string>(RoomConstraints.ConstraintTags.WashStation, ROOMS.CRITERIA.WASH_STATION.NAME),
@@ -55,7 +62,7 @@ namespace MoreBuildingInfo
             if (!has) { return ret; }
             if (addHeader)
             {
-                string headerText = "<b>" + CODEX.HEADERS.BUILDINGTYPE + ":</b>";
+                string headerText = "<b>Room Requirements Class:</b>";
                 // no tooltips because the codex entries don't have tooltips.
                 // this is still all translation-friendly so far.
                 ret.Add(new Descriptor(headerText, ""));
@@ -106,15 +113,8 @@ namespace MoreBuildingInfo
             List<Descriptor> roomDescriptors = Util.GetRoomDescriptors(target, addHeader: true);
             if (effects.Count > 0 || roomDescriptors.Count > 0)
             {
-                // only indent and add header if there are other types of item
-                if (requirements.Count > 0 || roomDescriptors.Count > 0)
-                {
-                    if (effects.Count > 0)
-                    {
-                        desc.Add(new Descriptor(UI.BUILDINGEFFECTS.OPERATIONEFFECTS, UI.BUILDINGEFFECTS.TOOLTIPS.OPERATIONEFFECTS));
-                    }
-                    GameUtil.IndentListOfDescriptors(effects);
-                }
+                desc.Add(new Descriptor(UI.BUILDINGEFFECTS.OPERATIONEFFECTS, UI.BUILDINGEFFECTS.TOOLTIPS.OPERATIONEFFECTS));
+                GameUtil.IndentListOfDescriptors(effects);
                 desc.AddRange(effects);
                 desc.AddRange(roomDescriptors);
                 active = true;

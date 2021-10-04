@@ -74,6 +74,10 @@ namespace AutomaticGeyserCalculation
         public static LocString TotalHeatTooltip = "In total {0} of thermal energy is produced by this geyser, averaging across its entire lifetime";
         public static LocString HiddenTotalHeatLabel = "Total Average: (Requires Analysis)";
         public static LocString HiddenTotalHeatTooltip = "Total average thermal energy output, including the dormancy period";
+        public static LocString HeatMassLabel = "Eruption Thermal Mass: {0}";
+        public static LocString HeatMassTooltip = "One eruption outputs {0} of heat in total";
+        
+        
         
         // Category Header: Cool
         public static LocString CategoryCoolLabel = "<b>Cooling Output (to {0}):</b>";
@@ -88,6 +92,8 @@ namespace AutomaticGeyserCalculation
         public static LocString TotalCoolTooltip = "In total this geyser provides {0} of cooling, averaging across its entire lifetime";
         public static LocString HiddenTotalCoolLabel = "Total Average: (Requires Analysis)";
         public static LocString HiddenTotalCoolTooltip = "Total average cooling output, including the dormancy period";
+        public static LocString CoolMassLabel = "Eruption Thermal Mass: {0}";
+        public static LocString CoolMassTooltip = "One eruption outputs {0} of cooling in total";
         
         // Steam Turbine Calculation
         public static LocString SteamTurbinePower = "This amount of heat energy could fully power {0:N1} steam turbines, if directed appropriately";
@@ -120,6 +126,8 @@ namespace AutomaticGeyserCalculation
             // dormancy buffer
             float dormantSeconds = __instance.configuration.GetYearOffDuration();
             float dormancyBuffer = totalFlow * dormantSeconds;
+            // need this for thermal mass
+            float eruptingSeconds = __instance.configuration.GetOnDuration();
             
             // average flow while active - doesn't need analysis
             string activeFlowStr = GameUtil.GetFormattedMass(activeFlow, GameUtil.TimeSlice.PerSecond);
@@ -187,6 +195,7 @@ namespace AutomaticGeyserCalculation
                 float peakHeat = SHC * heat * flow * 1000;
                 float activeHeat = peakHeat * eruptingProportion;
                 float totalHeat = activeHeat * activeProportion;
+                float heatMass = peakHeat * eruptingSeconds;
                 bool isSteam = element.id == SimHashes.Steam;
                 string label;
                 string tooltip;
@@ -219,6 +228,12 @@ namespace AutomaticGeyserCalculation
                     tooltip += SteamTurbineFootnote(totalHeat, temperature, totalFlow, isSteam);
                     __result.Add(new Descriptor(label, tooltip).IncreaseIndent());
                 }
+                
+                // thermal mass - no analysis required
+                heatEnergyStr = GameUtil.GetFormattedHeatEnergy(heatMass);
+                label = string.Format(HeatMassLabel, heatEnergyStr);
+                tooltip = string.Format(HeatMassTooltip, heatEnergyStr);
+                __result.Add(new Descriptor(label, tooltip).IncreaseIndent());
             }
             
             // only display cool energy if below the cool threshold
@@ -235,6 +250,7 @@ namespace AutomaticGeyserCalculation
                 float peakCool = SHC * cool * flow * 1000;
                 float activeCool = peakCool * eruptingProportion;
                 float totalCool = activeCool * activeProportion;
+                float coolMass = peakCool * eruptingSeconds;
                 
                 // peak cooling output - no analysis required
                 string peakCoolStr = GameUtil.GetFormattedHeatEnergyRate(peakCool);
@@ -263,7 +279,16 @@ namespace AutomaticGeyserCalculation
                         string.Format(TotalCoolTooltip, totalCoolStr)
                     ).IncreaseIndent());
                 }
+                
+                // thermal mass - no analysis required
+                string coolMassStr = GameUtil.GetFormattedHeatEnergy(coolMass);
+                __result.Add(new Descriptor(
+                    string.Format(CoolMassLabel, coolMassStr),
+                    string.Format(CoolMassTooltip, coolMassStr)
+                ).IncreaseIndent());
             }
+            // maybe put a gap before this unnecessary "Decor" entry.
+            //__result.Add(new Descriptor("\n", ""));
         }
         
         

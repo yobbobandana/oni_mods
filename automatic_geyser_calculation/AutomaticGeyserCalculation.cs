@@ -34,7 +34,7 @@ namespace AutomaticGeyserCalculation
     public class GeyserInformationPatch
     {
         // Category Header: Flow
-        public static LocString CategoryFlowLabel = "Flow Information:";
+        public static LocString CategoryFlowLabel = "<b>Flow Information:</b>";
         public static LocString CategoryFlowTooltip = "Calculated information relating to the rate of flow of this geyser";
         
         // Average Flow While Active
@@ -62,7 +62,7 @@ namespace AutomaticGeyserCalculation
         public static LocString HiddenDormancyBufferTooltip = "How much output should be buffered to sustain average flow across the dormancy period";
         
         // Category Header: Heat
-        public static LocString CategoryHeatLabel = "Heat Production (over {0}):";
+        public static LocString CategoryHeatLabel = "<b>Heat Production (over {0}):</b>";
         public static LocString CategoryHeatTooltip = "How much thermal energy is produced during the given phase, relative to a target temperature of {0}";
         
         // Positive Thermal Output - heating over 95°C
@@ -76,7 +76,7 @@ namespace AutomaticGeyserCalculation
         public static LocString HiddenTotalHeatTooltip = "Total average thermal energy output, including the dormancy period";
         
         // Category Header: Cool
-        public static LocString CategoryCoolLabel = "Cooling Output (to {0}):";
+        public static LocString CategoryCoolLabel = "<b>Cooling Output (to {0}):</b>";
         public static LocString CategoryCoolTooltip = "How much cooling this geyser provides during the given phase, relative to a target temperature of {0}";
         
         // Negative Thermal Output - cooling below 20°C

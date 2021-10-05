@@ -6,7 +6,7 @@ NAME=RationalPriority
 OUTPUT_DLL="${NAME}.dll"
 
 # the input .cs file(s)
-INPUT_CS="${NAME}.cs TooltipsAndInfo.cs MinorPatches.cs"
+INPUT_CS="${NAME}.cs TooltipsAndInfo.cs MinorPatches.cs RationalStorage.cs"
 
 # the appropriate libraries
 LIBS="0Harmony.dll,Assembly-CSharp-firstpass.dll,UnityEngine.dll,Assembly-CSharp.dll,UnityEngine.CoreModule.dll,UnityEngine.UI.dll"

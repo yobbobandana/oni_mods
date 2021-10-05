@@ -24,12 +24,12 @@ namespace RationalPriority
         public static LocString TOOLTIP_NORMAL = string.Concat(
             "{Description}\n\n",
             "Errand Type: {Groups}\n\n",
-            "Total ", STRINGS.UI.PRE_KEYWORD, "Importance", STRINGS.UI.PST_KEYWORD, ": {TotalPriority}\n",
-            "    • {Name}'s {BestGroup} Preference: {PersonalPriorityValue} ({PersonalPriority})\n",
-            "    • This {Building}'s Importance: {BuildingPriorityValue} (Priority {BuildingPriority})\n",
+            "Total ", STRINGS.UI.PRE_KEYWORD, "Task Difficulty", STRINGS.UI.PST_KEYWORD, ": {TotalCost}\n",
+            "    • {Name}'s {BestGroup} Preference: {PersonalPriorityCost} ({PersonalPriority})\n",
+            "    • This {Building}'s Importance: {BuildingPriorityCost} (Priority {BuildingPriority})\n",
             "    • Travel Cost: {TravelCost} ({TravelDistance}m)\n",
-            "    • All {BestGroup} Errands: {TypePriority}\n\n",
-            "Total Priority = ({PersonalPriorityValue} * {BuildingPriorityValue} * (256 / {TravelCost})) + {TypePriority} = {TotalPriority}"
+            "    • All {BestGroup} Errands: {TypeCost}\n\n",
+            "Total Difficulty = ({PersonalPriorityCost} * {BuildingPriorityCost} * {TravelCost}) + {TypeCost} = {TotalCost}"
         );
         
         // "Personal Needs" class errands (such as Eat)
@@ -104,19 +104,27 @@ namespace RationalPriority
             __result = __result.Replace("{BestGroup}", (choreGroup != null) ? choreGroup.Name : context.chore.choreType.Name);
             int personalPriority = (flag ? choreConsumer.GetPersonalPriority(context.chore.choreType) : 0);
             __result = __result.Replace("{PersonalPriority}", JobsTableScreen.priorityInfo[personalPriority].name.text);
-            __result = __result.Replace("{PersonalPriorityValue}", (1 << (personalPriority*2-2)).ToString());
+            //__result = __result.Replace("{PersonalPriorityValue}", (1 << (personalPriority*2-2)).ToString());
+            __result = __result.Replace("{PersonalPriorityCost}", (1 << ((5 - personalPriority) << 1)).ToString());
             __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
             int taskPriority = (flag ? context.chore.masterPriority.priority_value : 0);
-            __result = __result.Replace("{BuildingPriorityValue}", (1 << (taskPriority-1)).ToString());
+            //__result = __result.Replace("{BuildingPriorityValue}", (1 << (taskPriority-1)).ToString());
+            __result = __result.Replace("{BuildingPriorityCost}", (1 << (9 -taskPriority)).ToString());
             __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());
             float basePriority = (float)context.priority / 10000f;
             __result = __result.Replace("{TypePriority}", basePriority.ToString());
-            int travelCost = (context.cost >> 7) + 1;
-            if (travelCost < 1) { travelCost = 1; }
+            __result = __result.Replace("{TypeCost}", (1f - basePriority).ToString());
+            //int travelCost = (context.cost >> 7) + 1;
+            //if (travelCost < 1) { travelCost = 1; }
+            int travelCost = context.cost;
+            if (travelCost < 128) { travelCost = 128; }
+            if (travelCost > 65536) { travelCost = 65536; }
             __result = __result.Replace("{TravelCost}", travelCost.ToString());
             __result = __result.Replace("{TravelDistance}", ((float)context.cost/10.0f).ToString("#,0.#"));
-            double totalPriority = (double)Util.TaskImportance(context) + (double)basePriority;
-            __result = __result.Replace("{TotalPriority}", totalPriority.ToString("#,0.###"));
+            //double totalPriority = (double)Util.TaskImportance(context) + (double)basePriority;
+            //__result = __result.Replace("{TotalPriority}", totalPriority.ToString("#,0.###"));
+            double totalCost = (double)Util.TaskCost(context) + 1d - (double)basePriority;
+            __result = __result.Replace("{TotalCost}", totalCost.ToString("#,0.###"));
             
             // maybe tack on a bunch of debug info
             if (Util.debugTooltips) {

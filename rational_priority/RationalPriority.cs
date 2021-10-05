@@ -138,25 +138,26 @@ namespace RationalPriority
         // often a significantly cheaper operation.
         public static int TaskCost(Chore.Precondition.Context task, bool debug = false)
         {
-            // "do not do this" becomes less meaningful,
-            // but as the costs returned by this function are always >= 1,
-            // this is still fine.
-            if (task.personalPriority <= 0) { return 0; }
-            if (task.masterPriority.priority_value <= 0) { return 0; }
+            // here we don't have an equivalent to "0" for "do not do this".
+            // although we could use 0, it might interfere with comparisons.
+            // therefore just use the max possible cost value.
+            if (task.personalPriority <= 0) { return int.MaxValue; }
+            if (task.masterPriority.priority_value <= 0) { return int.MaxValue; }
             
             // pref and prio are inverted
-            int pref = 1 << ((5 - task.personalPriority) * 2);
+            int pref = 1 << ((5 - task.personalPriority) << 1);
             int prio = 1 << (9 - task.masterPriority.priority_value);
             
             if (!respectEnableProximity || Game.Instance.advancedPersonalPriorities)
             {
                 // minimum meaningful distance of 12.8 tiles.
                 // we could save some bits here by eating the bottom 7 bits,
-                // but not really any need at the moment.
-                if (task.cost < 128) { return pref * prio * 128; }
+                // but there's not really any need at the moment
+                // and that does destroy precision.
+                if (task.cost < 128) { return (pref * prio) << 7; }
                 // pref and prio use up to 14 bits,
                 // so ensure cost doesn't use more than 16.
-                if (task.cost > 65536) { return pref * prio * 65536; }
+                if (task.cost > 65536) { return (pref * prio) << 16; }
                 return pref * prio * task.cost;
             }
             return pref * prio;
@@ -204,7 +205,7 @@ namespace RationalPriority
             // ...but not for special type tasks because sheesh, Klei.
             if (__instance.masterPriority.priority_class == PriorityScreen.PriorityClass.basic || __instance.masterPriority.priority_class == PriorityScreen.PriorityClass.high)
             {
-                __result = Util.TaskImportance(__instance) - Util.TaskImportance(obj);
+                __result = Util.TaskCost(obj) - Util.TaskCost(__instance);
                 if (__result != 0) { return false; }
             }
             

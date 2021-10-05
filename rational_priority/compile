@@ -6,7 +6,7 @@ NAME=RationalPriority
 OUTPUT_DLL="${NAME}.dll"
 
 # the input .cs file(s)
-INPUT_CS="${NAME}.cs"
+INPUT_CS="${NAME}.cs TooltipsAndInfo.cs MinorPatches.cs"
 
 # the appropriate libraries
 LIBS="0Harmony.dll,Assembly-CSharp-firstpass.dll,UnityEngine.dll,Assembly-CSharp.dll,UnityEngine.CoreModule.dll,UnityEngine.UI.dll"
@@ -19,4 +19,4 @@ if [ -f "lib" ]; then LIBDIR="lib/"; else LIBDIR="${DEFAULT_LIBDIR}"; fi
 
 # compile it
 set -x
-mcs -optimize -lib:"${LIBDIR}" -r:"${LIBS}" -t:library -out:"${OUTPUT_DLL}" "${INPUT_CS}"
+mcs -optimize -lib:"${LIBDIR}" -r:"${LIBS}" -t:library -out:"${OUTPUT_DLL}" ${INPUT_CS}

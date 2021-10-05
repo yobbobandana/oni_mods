@@ -1,0 +1,32 @@
+By default duplicant task prioritization is inflexible, irrational, and quite frankly insane. This makes their task selection more rational, and thus slightly less insane.
+
+[h2]Key Features[/h2]
+[list]
+ [*] Duplicants no longer prioritize tasks based on a fixed importance heirarchy. In stead they will weigh the task priority, their personal preferences, and the travel distance required, making an informed decision based on all of these factors combined. This means a lower priority task nearby may outweigh a higher priority task far away. Similarly a nearby high priority task may outweigh a low priority task for which they have higher personal preference. In general, their task selection will simply make more sense.
+ [*] Storage tasks for tiny amounts have reduced importance. Ranchers will not immediately run across the map to refil 1kg of phosphorite their shinebug just ate. Haulers will not freak out to constantly refil the 10kg of dirt your researcher just used. Refill priority will only reach the assigned value if the task will use their full carrying capacity, or if the receptacle is already half-empty. Otherwise the importance will be proportionately reduced.
+[/list]
+Additionally the following minor features are included.
+[list]
+ [*] "out of world" duplicants are no longer listed in the errands tab of the selection info window.
+[/list]
+
+[h2]Details[/h2]
+
+Most of the time you won't need to worry about task selection with this mod. If you want a duplicant to spend more time doing digging tasks, increase their personal digging priority in the priorities screen. If you want them to dig even more, increase it again. If you want a task done, set it to a higher priority. If your duplicants are doing something you think is unimportant, set it to a lower priority. This should all just work.
+
+With the default behaviour a duplicant with a higher personal digging preference will never do another task when there is digging to be done, no matter how high you set its priority. With this mod a duplicant with a digging preference may still decide to empty that toilet, if you set the priority high enough and they are nearby.
+
+It also greatly reduces instances of duplicants running across the map for trivial reasons. If there is a task right in front of them, they will prefer to do that before running off to do something far away.
+
+In general, an increase of +1 priority on a task will cause a duplicant to walk twice as far to do it. An increase of one personal preference level will cause a duplicant to walk 4 times as far, all else being equal. But as i said above you probably don't need to care. Just set the priorities as you think they should be, and treat your duplicants with the respect they now deserve.
+
+[h2]Bugs, Feedback and Requests[/h2]
+
+As always, all feedback is welcome. Either here, or on github.
+
+[h2]Source code and copyright[/h2]
+
+Source code for this mod can be found on github, [url=https://github.com/yobbobandana/oni_mods/tree/master/rational_priority]here[/url].
+
+As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as it still abides by Klei's terms of use.
+...

@@ -1,4 +1,4 @@
-A full cluster with Rust-based starting planet, and several unique features.
+A full new cluster with Rust-based starting planet, and several unique features.
 
 Two starts are provided, one with a medium rusty planetoid comparable in size to an ordinary Spaced Out style start. The other start is small-sized but otherwise similar, comparable in size to the teleporter and crashed satellite worlds.
 
@@ -6,15 +6,17 @@ This is a somewhat difficult starting scenario, best for experienced players or 
 
 Both clusters are found in the "Spaced Out" menu (not "Classic").
 
-Key features:
+[h2]Key features[/h2]
 [list]
  [*] A new starting planetoid, consisting mostly of rust.
  [*] An optional mini-sized start, for an even more Spaced Out feel. Also good for that old weak laptop you really shouldn't be playing ONI on.
  [*] Overhauled teleporter and rocket planetoids specifically for this cluster.
  [*] New tiny asteroids: sandstone, wasteland, and swampy marsh.
  [*] New geysers: liquid ethanol and liquid chlorine, both guaranteed in the starting world.
- [*] An expanded starmap: 15 rings in stead of 11
+ [*] An expanded starmap: 15 rings in stead of 11.
 [/list]
+
+[h2]Details[/h2]
 
 I started this to test the possibility of a single-biome starting planet, and was pleasantly surprised with the result. Try it out and let me know what you think!
 
@@ -24,10 +26,20 @@ Combined with a greatly increased starmap size (feedback needed), it gives a muc
 
 Even though these worlds have reduced size, the reduced biome density makes them feel larger with fewer barriers to expansion. Try the medium-sized one if you like building a large primary base, and try the mini-sized one for a spread-out cluster of bases.
 
-
-Known issues:
+[h2]Known issues[/h2]
 [list]
  [*] The asteroid images on the starmap and in the main menu are not quite correct. Any help is welcome here.
  [*] It still needs playtesting. Feedback is welcome.
 [/list]
+
+[h2]Source Code and Copyright[/h2]
+
+Source code can be found on github [url=https://github.com/yobbobandana/oni_mods/tree/master/pure_rust]here[/url].
+
+As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as you also abide by Klei's terms of use.
+
+[h2]Changelog[/h2]
+v0.1.3: ensure warp planet and hatch planet are always within steam rocket range of the starting asteroid
+v0.1.2: update for ONI version 481350 which modified geyser creation details
+v0.1.1: added a small amount of coal to the starting world border, so that some ceramic can be created even with teleporters disabled
 

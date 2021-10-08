@@ -1,0 +1,13 @@
+# keys to remove from in-memory structure when this file is loaded
+remove: []
+# elements to add from in-memory structure when this file is loaded
+add:
+  maficCrust:
+    - element: MaficRock
+      weight: 1
+    - element: Regolith
+      weight: 1
+    - element: IronOre
+      weight: 0.4
+    - element: Carbon
+      weight: 0.1

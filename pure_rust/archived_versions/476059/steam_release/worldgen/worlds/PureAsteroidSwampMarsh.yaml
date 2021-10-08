@@ -1,0 +1,98 @@
+name: STRINGS.WORLDS.SWAMPYMARSHMOONLET.NAME
+description: STRINGS.WORLDS.MARSHYMOONLET.DESCRIPTION
+nameTable: SWAMP
+asteroidIcon: asteroid_marshy_moonlet_kanim
+disableWorldTraits: true
+
+worldsize:
+  X: 64
+  Y: 96
+layoutMethod: PowerTree
+
+defaultsOverrides:
+  data:
+    DrawWorldBorderOverVacuum: false
+    DrawWorldBorder: true
+    WorldBorderThickness: 2
+    WorldBorderRange: 1
+    OverworldDensityMin: 15
+    OverworldDensityMax: 15
+    OverworldAvoidRadius: 5
+    OverworldSampleBehaviour: PoissonDisk
+    POIPadding: 1
+
+# no special feature
+
+# List all the subworld files to load
+subworldFiles:
+  - name: subworlds/space/Space
+  - name: expansion1::subworlds/space/SpaceWithSwampyBorder
+  - name: expansion1::subworlds/swamp/Swamp
+  - name: subworlds/marsh/HotMarsh
+#  - name: expansion1::subworlds/magma/BottomSmall
+
+fixedTraits:
+  - sunlightMedHigh
+  - cosmicRadiationMed
+
+unknownCellsAllowedSubworlds:
+  - tagcommand: Default
+    command: Replace
+    subworldNames:
+      - subworlds/marsh/HotMarsh
+      - expansion1::subworlds/swamp/Swamp
+  - tagcommand: AtTag
+    tag: AtSurface
+    command: Replace
+    subworldNames:
+      - subworlds/space/Space
+  - tagcommand: DistanceFromTag # Space with crust
+    tag: AtSurface
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/space/SpaceWithSwampyBorder
+#  - tagcommand: DistanceFromTag
+#    tag: AtDepths
+#    minDistance: 0
+#    maxDistance: 0
+#    command: Replace
+#    subworldNames:
+#      - expansion1::subworlds/magma/BottomSmall
+
+worldTemplateRules:
+  # cobalt
+  - names:
+      - expansion1::geysers/molten_cobalt
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ BoggyMarsh, Swamp ]
+  # p-water
+  - names:
+      - geysers/slush_water
+      - geysers/filthy_water
+    listRule: GuaranteeAll
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ BoggyMarsh, Swamp ]
+  # Curated Geysers
+  - names:
+    - geysers/slimy_po2
+    - geysers/methane
+    - geysers/chlorine_gas
+    - geysers/hot_co2
+    - geysers/hot_hydrogen
+    - geysers/hot_po2
+    listRule: TryOne
+    times: 2
+    allowDuplicates: true
+    priority: 50
+    useRelaxedFiltering: true # Marsh contains a lot of features, this means they can be replaced
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ BoggyMarsh, Swamp ]
+

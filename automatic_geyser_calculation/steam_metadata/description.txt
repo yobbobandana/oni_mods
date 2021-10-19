@@ -22,4 +22,12 @@ Temperatures will of course be in your desired units: C, F or K.
 
 Steam turbine calculations are provided as part of the tooltip when hovering over the thermal information. They assume a desire for maximum power, and assume the turbine is externally cooled (or an aquatuner is used). If you prefer self-cooled setups, simply multiply the expected number of turbines by 3. I considered adding more info for steam turbine setups, but it got overcomplicated very quickly so i went with the basics here.
 
-As always, any feedback is welcome.
+[h2]Bugs, Feedback and Requests[/h2]
+
+As always, all feedback is welcome. Either here, or on github.
+
+[h2]Source code and copyright[/h2]
+
+Source code for this mod can be found on github, [url=https://github.com/yobbobandana/oni_mods/tree/master/automatic_geyser_calculation]here[/url].
+
+As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as you also abide by Klei's terms of use.

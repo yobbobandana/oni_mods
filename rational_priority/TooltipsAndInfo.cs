@@ -107,7 +107,7 @@ namespace RationalPriority
             //__result = __result.Replace("{PersonalPriorityValue}", (1 << (personalPriority*2-2)).ToString());
             __result = __result.Replace("{PersonalPriorityCost}", (1 << ((5 - personalPriority) << 1)).ToString());
             __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
-            int taskPriority = (flag ? context.chore.masterPriority.priority_value : 0);
+            int taskPriority = (flag ? context.masterPriority.priority_value : 0);
             //__result = __result.Replace("{BuildingPriorityValue}", (1 << (taskPriority-1)).ToString());
             __result = __result.Replace("{BuildingPriorityCost}", (1 << (9 -taskPriority)).ToString());
             __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());

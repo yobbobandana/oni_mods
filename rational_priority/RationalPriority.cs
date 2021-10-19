@@ -1,9 +1,10 @@
 using HarmonyLib; // Harmony
 using KMod; // UserMod2
-//using System.Collections.Generic; // List
+using System.Collections.Generic; // List, IComparer
 using STRINGS;
 using UnityEngine; // GameObject
-//using System.Reflection; // MethodInfo
+using System.Reflection; // MethodInfo
+using System.Runtime.CompilerServices; // MethodImpl
 
 // An attempt to make duplicant prioritization somewhat sane.
 // 
@@ -40,17 +41,19 @@ using UnityEngine; // GameObject
 // Some consequences of this system:
 //   * a dupe with "very low" task preference will value a priority 9 task equal
 //       to a priority 1 task for which they have "very high" task preference.
-//   * a dupe will value a priority 9 task 2560m away equal
-//       to a priority 1 task 10m away.
-//   * a dupe will value a priority 9 task 160m away equal
-//       to a priority 5 task 10m away.
+//   * a dupe will value a priority 9 task 2560m away
+//       equal to a priority 1 task 10m away.
+//   * a dupe will value a priority 9 task 160m away
+//       equal to a priority 5 task 10m away.
 // 
 // In general however, this should simply lead to sane, rational behaviour.
 
 // TODO:
-//   * rational storage priority
+//   * adaptive storage priority based on filled / empty amount
 //   * better emergency dupe selection
 //   * tooltips in errands tab for building need updating
+//   * reduced importance of storage tasks for tiny amounts of material
+//   * importance reduction proportionate to wasted carrying capacity
 
 // other included features:
 //   * "out of world" dupes will not be listed in building errands
@@ -109,7 +112,7 @@ namespace RationalPriority
             // and 4 times as far to do a task they have +1 personal preference for.
             // this should all even out sensibly.
             
-            // apply the basic heuristic.
+            // here we apply the basic heuristic.
             // ahh, the beauty of linear functions
             int total_prio = pref * prio;
             
@@ -165,7 +168,30 @@ namespace RationalPriority
             return pref * prio;
         }
         
-        public bool IsDuplicant(GameObject obj)
+        // simple versions of task cost calc, for use in sort functions.
+        // note: these will break if cost is greater than 2^^(31-9) or so,
+        // but as this corresponds to around 400,000 tiles
+        // and current game maps only have 100,000 tiles in total,
+        // this seems unlikely.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int PrefPrioCost(int pref, int prio, int cost)
+        {
+            int prefCost = 1 << ((5 - pref) << 1);
+            int prioCost = 1 << (9 - prio);
+            if (cost < 128) { return (prefCost * prioCost) << 7; }
+            return prefCost * prioCost * cost;
+        }
+        // when no preference relevant or available
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int PrioCost(int prio, int cost)
+        {
+            if (cost < 128) { return (1 << (9 - prio)) << 7; }
+            return (1 << (9 - prio)) * cost;
+        }
+        
+        // i was going to use this but it turned out not to be necessary.
+        // however, perhaps it will be useful again.
+        public static bool IsDuplicant(GameObject obj)
         {
             return obj.HasTag(GameTags.DupeBrain);
         }
@@ -236,12 +262,13 @@ namespace RationalPriority
     
     
     // ----------------------
-    // fetch prioritization 2
+    // fetch prioritization 1
     // ----------------------
     
     // which fetch task is better.
     // fetch chores seem to be pre-sorted into a single precondition.context,
     // so this needs to use the correct prioritization function.
+    // it's also misnamed, it should be called "Subsumes".
     [HarmonyPatch(typeof(GlobalChoreProvider.Fetch))]
     [HarmonyPatch("IsBetterThan")]
     public class FetchPriorityPatch
@@ -276,19 +303,18 @@ namespace RationalPriority
             {
                 __result = false; return false;
             }
-            // using the same formula as above,
-            // just backwards so we can multiply in stead of divide the cost,
-            // and simplified a little under the assumption that cost
-            // will not exceed 2^^(31-9) or so
-            int thisCost = 1 << (9 - __instance.priority.priority_value);
-            int fetchCost = 1 << (9 - fetch.priority.priority_value);
-            thisCost *= __instance.cost;
-            fetchCost *= fetch.cost;
+            
+            // here we override the cost function.
+            // we can only take into account task priority,
+            // as the chooser of the chore is not yet known.
+            int thisCost = Util.PrioCost(__instance.priority.priority_value, __instance.cost);
+            int fetchCost = Util.PrioCost(fetch.priority.priority_value, fetch.cost);
             if (thisCost != fetchCost)
             {
                 __result = thisCost < fetchCost; return false;
             }
-            // use the default ordering in case of ties
+            
+            // fall back to the default ordering in case of tie
             if (__instance.priority.priority_value > fetch.priority.priority_value)
             {
                 __result = true; return false;
@@ -304,13 +330,15 @@ namespace RationalPriority
     
     
     // ----------------------
-    // fetch prioritization 1
+    // fetch prioritization 2
     // ----------------------
     
     // not sure if modifying this is worth the slight extra calculation cost.
     // the IsBetterThan function above is always passed over the list once.
+    // it's... not great if it's not in correct order,
+    // but it will probably still technically work even if it disagrees.
     // ref: GlobalChoreProvider.UpdateFetches
-    /*[HarmonyPatch]
+    [HarmonyPatch]
     public class FetchComparisonPatch
     {
         static MethodInfo TargetMethod()
@@ -326,27 +354,100 @@ namespace RationalPriority
             GlobalChoreProvider.Fetch b,
             ref int __result
         ) {
-            int num = b.priority.priority_class - a.priority.priority_class;
-            if (num != 0)
-            {
-                __result = num; return false;
-            }
-            // using the same formula as above
-            int aCost = 1 << (9 - a.priority.priority_value);
-            int bCost = 1 << (9 - b.priority.priority_value);
-            aCost *= a.cost;
-            bCost *= b.cost;
-            __result = aCost - bCost; return false;
+            __result = b.priority.priority_class - a.priority.priority_class;
+            if (__result != 0) { return false; }
+            // using the same basic formula as above
+            int aCost = Util.PrioCost(a.priority.priority_value, a.cost);
+            int bCost = Util.PrioCost(b.priority.priority_value, b.cost);
+            __result = aCost - bCost;
+            return false;
         }
-    }*/
+    }
+    
+    
+    // ----------------------
+    // fetch prioritization 3
+    // ----------------------
+    
+    // this is a bit nasty because "ClearableManager" is internal.
+    [HarmonyPatch]
+    public class CollectSortedClearablesOverride
+    {
+        // we have to look this up, but that's okay
+        static MethodInfo TargetMethod()
+        {
+            return AccessTools.TypeByName("ClearableManager")
+                .GetMethod("CollectSortedClearables", BindingFlags.NonPublic | BindingFlags.Static);
+        }
+        
+        // this structure must absolutely match that in ClearableManager
+        private struct MarkedClearable
+        {
+            public Clearable clearable;
+            public Pickupable pickupable;
+            public Prioritizable prioritizable;
+        }
+        
+        // this structure must absolutely match that in ClearableManager.
+        // we override the comparer method.
+        // this is kept simple by overloading the "cost" field,
+        // such that it already incorporates task priority.
+        private struct SortedClearable
+        {
+            public class Comparer : IComparer<SortedClearable>
+            {
+                public int Compare(SortedClearable a, SortedClearable b)
+                {
+                    return a.cost - b.cost;
+                }
+            }
+            public Pickupable pickupable;
+            public PrioritySetting masterPriority;
+            public int cost;
+            public static Comparer comparer = new Comparer();
+        }
+        
+        // we are only overriding this so that we can override the cost.
+        // it should be otherwise identical to base.
+        static bool Prefix(
+            Navigator navigator,
+            KCompactedVector<MarkedClearable> clearables,
+            List<SortedClearable> sorted_clearables
+        ) {
+            sorted_clearables.Clear();
+            foreach (MarkedClearable data in clearables.GetDataList())
+            {
+                int navigationCost = data.pickupable.GetNavigationCost(navigator, data.pickupable.cachedCell);
+                if (navigationCost != -1)
+                {
+                    PrioritySetting prio = data.prioritizable.GetMasterPriority();
+                    sorted_clearables.Add(new SortedClearable
+                    {
+                        pickupable = data.pickupable,
+                        masterPriority = prio,
+                        // the only change: (previously just navigationCost)
+                        cost = Util.PrioCost(prio.priority_value, navigationCost)
+                    });
+                }
+            }
+            sorted_clearables.Sort(SortedClearable.comparer);
+            
+            // we might theoretically want to reset the cost field here,
+            // but it's not actually used anywhere in base code so why bother?
+            
+            return false; // skip original
+        }
+    }
     
     
     // ----------------------------
     // chore precondition overrides
     // ----------------------------
     
-    // not sure when these actually apply to dupes...
+    // not sure if/when these actually apply to dupes...
     // when i messed with them critters stopped going to ranching tasks.
+    // if it turns out they apply to dupes after all,
+    // something will need to be done.
     /*
     [HarmonyPatch(typeof(ChorePreconditions))]
     [HarmonyPatch(MethodType.Constructor)]

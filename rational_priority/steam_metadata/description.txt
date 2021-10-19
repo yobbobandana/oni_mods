@@ -3,14 +3,13 @@ By default duplicant task prioritization is inflexible, irrational, and quite fr
 [h2]Key Features[/h2]
 [list]
  [*] Duplicants no longer prioritize tasks based on a fixed importance heirarchy. In stead they will weigh the task priority, their personal preferences, and the travel distance required, making an informed decision based on all of these factors combined. This means a lower priority task nearby may outweigh a higher priority task far away. Similarly a nearby high priority task may outweigh a low priority task for which they have higher personal preference. In general, their task selection will simply make more sense.
- [*] Storage tasks for tiny amounts have reduced importance. Ranchers will not immediately run across the map to refil 1kg of phosphorite their shinebug just ate. Haulers will not freak out to constantly refil the 10kg of dirt your researcher just used. Refill priority will only reach the assigned value if the task will use their full carrying capacity, or if the receptacle is already half-empty. Otherwise the importance will be proportionately reduced.
 [/list]
 Additionally the following minor features are included.
 [list]
  [*] "out of world" duplicants are no longer listed in the errands tab of the selection info window.
 [/list]
 
-[h2]Details[/h2]
+[h2]New Priority System[/h2]
 
 Most of the time you won't need to worry about task selection with this mod. If you want a duplicant to spend more time doing digging tasks, increase their personal digging priority in the priorities screen. If you want them to dig even more, increase it again. If you want a task done, set it to a higher priority. If your duplicants are doing something you think is unimportant, set it to a lower priority. This should all just work.
 
@@ -28,5 +27,5 @@ As always, all feedback is welcome. Either here, or on github.
 
 Source code for this mod can be found on github, [url=https://github.com/yobbobandana/oni_mods/tree/master/rational_priority]here[/url].
 
-As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as it still abides by Klei's terms of use.
-...
+As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as you also abide by Klei's terms of use.
+

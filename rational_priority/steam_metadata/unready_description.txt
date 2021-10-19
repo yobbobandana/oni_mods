@@ -1,0 +1,16 @@
+
+
+
+[h2]Key Features[/h2]
+[list]
+ [*] Storage tasks for tiny amounts have reduced importance. Ranchers will not immediately run across the map to refil 1kg of phosphorite their shinebug just ate. Haulers will not freak out to constantly refil the 10kg of dirt your researcher just used. Refill priority will only reach the assigned value if the task will use their full carrying capacity, or if the receptacle is already half-empty. Otherwise the importance will be proportionately reduced.
+[/list]
+
+[h2]Storage Hysterics[/h2]
+
+The reduced importance for small-volume storage tasks only applies to a few types of task. These are: Research Supply, Ranching Supply, and Storage. If you come across another type of task you think needs the same treatment, please let me know.
+
+These storage errands will have their given priority until the amount remaining to store is less than the duplcant's carrying capacity. The priority is then reduced according to how much of the dupe's carrying capacity would be wasted. So for example given a priority 5 storage task for 200kg of material to a 1000kg storage bin, a dupe with 200kg carrying capacity will consider this task as priority 5, whereas a dupe with 1000kg carrying capacity will consider it as priority 1. It will eventually get done, but they will prefer to do other more useful things first.
+
+This may need some tweaking. I also considered increasing priority for empty bins
+

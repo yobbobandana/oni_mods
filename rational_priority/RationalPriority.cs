@@ -82,7 +82,7 @@ namespace RationalPriority
         public static bool respectEnableProximity = false;
         
         // whether to display detailed debugging information in chore tooltips.
-        public static bool debugTooltips = true;
+        public static bool debugTooltips = false;
         
         
         // heuristic function determining relative task importance.

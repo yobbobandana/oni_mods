@@ -21,9 +21,9 @@ In general, an increase of +1 priority on a task will cause a duplicant to walk 
 
 [h2]Notes and Known Issues[/h2]
 
-It's worth noting that with this mod, the stock "enable proximity" setting will do nothing. Proximity is always taken into account. The default secret hidden priority order is *also* taken into account. You can just ignore this setting.
+It's worth noting that with this mod, the stock "enable proximity" setting will do nothing. Proximity is always taken into account. The default secret hidden priority order is [i]also[/i] taken into account. You can just ignore this setting.
 
-The duplicant "to do" list sometimes will not list the correct priority for a job. Particularly this applies to sweep errands. Dupes should still *choose* the correct job. This list just sometimes displays incorrect information. This also applies to the base game even without this mod. As such it would be quite a pain to fix.
+The duplicant "to do" list sometimes will not list the correct priority for a job. Particularly this applies to sweep errands. Dupes should still [i]choose[/i] the correct job. This list just sometimes displays incorrect information. This also applies to the base game even without this mod. As such it would be quite a pain to fix.
 
 [h2]Bugs, Feedback and Requests[/h2]
 

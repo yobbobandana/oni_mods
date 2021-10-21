@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.PUREROCKET_OCEANOIL.NAME
 description: STRINGS.WORLDS.PUREROCKET_OCEANOIL.DESCRIPTION
-nameTable: OILY
+nameTables:
+  - OILY
 asteroidIcon: asteroid_oil_planet_kanim
 disableWorldTraits: true
 

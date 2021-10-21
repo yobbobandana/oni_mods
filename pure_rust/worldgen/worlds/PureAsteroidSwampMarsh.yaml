@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.SWAMPYMARSHMOONLET.NAME
 description: STRINGS.WORLDS.MARSHYMOONLET.DESCRIPTION
-nameTable: SWAMP
+nameTables:
+  - SWAMP
 asteroidIcon: asteroid_marshy_moonlet_kanim
 disableWorldTraits: true
 

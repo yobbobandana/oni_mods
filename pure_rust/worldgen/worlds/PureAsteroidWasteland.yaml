@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.PUREWASTELANDMOONLET.NAME
 description: STRINGS.WORLDS.PUREWASTELANDMOONLET.DESCRIPTION
-nameTable: TERRA
+nameTables:
+  - TERRA
 asteroidIcon: asteroid_sandstone_start_kanim
 disableWorldTraits: true
 

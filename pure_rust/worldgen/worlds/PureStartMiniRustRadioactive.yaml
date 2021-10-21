@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.RUSTERIA_MINI.NAME
 description: STRINGS.WORLDS.RUSTERIA_MINI.DESCRIPTION
-nameTable: TUNDRA
+nameTables:
+  - TUNDRA
 asteroidIcon: asteroid_swamp_rocket_kanim
 disableWorldTraits: true
 

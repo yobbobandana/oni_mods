@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.PUREWARP_FORESTJUNGLE.NAME
 description: STRINGS.WORLDS.PUREWARP_FORESTJUNGLE.DESCRIPTION
-nameTable: FOREST
+nameTables:
+  - FOREST
 asteroidIcon: asteroid_forest_rocket_kanim
 disableWorldTraits: true
 

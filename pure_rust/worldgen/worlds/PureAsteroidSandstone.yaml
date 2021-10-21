@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.PURESANDSTONEMOONLET.NAME
 description: STRINGS.WORLDS.PURESANDSTONEMOONLET.DESCRIPTION
-nameTable: SANDSTONE
+nameTables:
+  - SANDSTONE
 asteroidIcon: asteroid_sandstone_start_kanim
 disableWorldTraits: true
 

@@ -2,7 +2,7 @@ name: STRINGS.CLUSTER_NAMES.RUSTERIA_MINI.NAME
 description: STRINGS.CLUSTER_NAMES.RUSTERIA_MINI.DESCRIPTION
 requiredDlcId: EXPANSION1_ID
 coordinatePrefix: PM-RUST-C
-menuOrder: 7
+menuOrder: 102
 clusterCategory: 2
 difficulty: 4
 
@@ -21,22 +21,26 @@ numRings: 16
 worldPlacements:
 - world: worlds/PureStartMiniRustRadioactive
   buffer: 2
+  locationType: StartWorld
   allowedRings:
     min: 0
     max: 0
 - world: worlds/PureRocketOceanOil # Rocket world
   buffer: 2
+  locationType: InnerCluster
   allowedRings:
     min: 3
     max: 3
 - world: worlds/PureWarpForestJungle # Warp world
   buffer: 2
+  locationType: InnerCluster
   allowedRings:
     min: 5
     max: 5
 # Inner Worlds
 - world: worlds/PureAsteroidSandstone
   buffer: 2
+  locationType: InnerCluster
   allowedRings:
     min: 3
     max: 5

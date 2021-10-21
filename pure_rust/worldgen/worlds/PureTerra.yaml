@@ -1,6 +1,7 @@
 name: STRINGS.WORLDS.TERRAMOONLET.NAME
 description: STRINGS.WORLDS.TERRAMOONLET.DESCRIPTION
-nameTable: TERRA
+nameTables:
+  - TERRA
 asteroidIcon: asteroid_sandstone_start_kanim
 disableWorldTraits: true
 

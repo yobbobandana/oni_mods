@@ -1,3 +1,7 @@
+v0.2:
+  * update for ONI version 482250 which added some small starts and modified worldgen
+  * mini rusteroid start is now one layer shorter as originally intended (there was previously a bug preventing this)
+  * there is now a guaranteed "rusty ore field" space POI near to the starting world for renewable rust
 v0.1.3:
   * ensure warp planet and hatch planet are always within steam rocket range
 v0.1.2:

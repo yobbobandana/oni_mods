@@ -5,11 +5,9 @@ nameTables:
 asteroidIcon: asteroid_swamp_rocket_kanim
 disableWorldTraits: true
 
-# note: the game crashes after generation if height is less than 175 or so.
-# i would make it smaller and remove the third uranium layer if i could.
 worldsize:
   X: 128
-  Y: 175
+  Y: 160
 layoutMethod: PowerTree
 
 defaultsOverrides:
@@ -30,8 +28,8 @@ startingBasePositionHorizontal:
   min: 0.5
   max: 0.5
 startingBasePositionVertical:
-  min: 0.54
-  max: 0.54
+  min: 0.46
+  max: 0.5
 
 fixedTraits:
   - sunlightVeryLow
@@ -81,15 +79,15 @@ unknownCellsAllowedSubworlds:
     command: Replace
     subworldNames:
       - expansion1::subworlds/rust/med_Rust
-  - tagcommand: DistanceFromTag
-    tag: AtDepths
-    minDistance: 2
-    maxDistance: 2
-    command: Replace
-    subworldNames:
-      - expansion1::subworlds/rust/med_Rust
-      - subworlds/rust/RustFrozen
-      - expansion1::subworlds/radioactive/med_Radioactive
+  #- tagcommand: DistanceFromTag
+  #  tag: AtDepths
+  #  minDistance: 2
+  #  maxDistance: 2
+  #  command: Replace
+  #  subworldNames:
+  #    - expansion1::subworlds/rust/med_Rust
+  #    - subworlds/rust/RustFrozen
+  #    - expansion1::subworlds/radioactive/med_Radioactive
   - tagcommand: DistanceFromTag
     tag: AtDepths
     minDistance: 1

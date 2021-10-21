@@ -100,7 +100,7 @@ poiPlacements:
 
   # TODO: something specific to rust start?
   - pois: # spawn all of these
-      - HarvestableSpacePOI_SandyOreField # specific to a sandstone start asteroid!
+      - HarvestableSpacePOI_RustyOreField # specific to a rusty start asteroid!
     numToSpawn: 1
     allowedRings:
       min: 2

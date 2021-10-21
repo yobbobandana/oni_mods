@@ -1,0 +1,22 @@
+MobLookupTable:
+  # keys to remove from in-memory structure when this file is loaded
+  remove: []
+  # elements to add from in-memory structure when this file is loaded
+  add:
+    tiny_BasicSingleHarvestPlantSeed:
+      prefabName: BasicSingleHarvestPlantSeed
+      location: Solid
+      selectMethod: Centroid
+      density:
+        min: 0.025
+        max: 0.03
+      width: 1
+      height: 1
+    ForestTreeSeed:
+      location: Solid
+      selectMethod: Centroid
+      density:
+        min: 0.005
+        max: 0.010
+      width: 1
+      height: 1

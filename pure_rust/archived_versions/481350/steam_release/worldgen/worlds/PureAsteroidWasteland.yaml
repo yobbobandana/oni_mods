@@ -1,0 +1,98 @@
+name: STRINGS.WORLDS.PUREWASTELANDMOONLET.NAME
+description: STRINGS.WORLDS.PUREWASTELANDMOONLET.DESCRIPTION
+nameTable: TERRA
+asteroidIcon: asteroid_sandstone_start_kanim
+disableWorldTraits: true
+
+worldsize:
+  X: 64
+  Y: 96
+layoutMethod: PowerTree
+
+defaultsOverrides:
+  data:
+    DrawWorldBorderOverVacuum: false
+    DrawWorldBorder: true
+    WorldBorderThickness: 2
+    WorldBorderRange: 1
+    OverworldDensityMin: 15
+    OverworldDensityMax: 15
+    OverworldAvoidRadius: 5
+    OverworldSampleBehaviour: PoissonDisk
+    POIPadding: 1
+
+# no special feature
+
+# List all the subworld files to load
+subworldFiles:
+  - name: subworlds/space/Space
+  - name: expansion1::subworlds/space/SpaceWithSandyBorder
+  - name: expansion1::subworlds/wasteland/WastelandBeetle
+  - name: expansion1::subworlds/wasteland/WastelandWorm
+#  - name: expansion1::subworlds/magma/BottomSmall
+
+fixedTraits:
+  - sunlightMedHigh
+  - cosmicRadiationMed
+
+unknownCellsAllowedSubworlds:
+  - tagcommand: Default
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/wasteland/WastelandBeetle
+      - expansion1::subworlds/wasteland/WastelandWorm
+  - tagcommand: AtTag
+    tag: AtSurface
+    command: Replace
+    subworldNames:
+      - subworlds/space/Space
+  - tagcommand: DistanceFromTag # Space with crust
+    tag: AtSurface
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/space/SpaceWithSandyBorder
+#  - tagcommand: DistanceFromTag
+#    tag: AtDepths
+#    minDistance: 0
+#    maxDistance: 0
+#    command: Replace
+#    subworldNames:
+#      - expansion1::subworlds/magma/BottomSmall
+
+worldTemplateRules:
+  # 3 sulfur geysers
+  - names:
+      - expansion1::geysers/liquid_sulfur
+    listRule: GuaranteeOne
+    times: 3
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ Wasteland ]
+  # one completely random geyser
+  - names:
+      - geysers/generic
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ Wasteland ]
+  # up to two curated geysers
+  - names:
+    - geysers/methane
+    - geysers/hot_co2
+    - geysers/hot_hydrogen
+    - geysers/molten_copper
+    - geysers/steam
+    - geysers/hot_steam
+    - geysers/oil_drip
+    listRule: TryOne
+    times: 2
+    allowDuplicates: true
+    priority: 50
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ Wasteland ]
+

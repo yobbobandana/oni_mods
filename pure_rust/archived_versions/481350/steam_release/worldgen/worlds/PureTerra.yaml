@@ -1,0 +1,209 @@
+name: STRINGS.WORLDS.TERRAMOONLET.NAME
+description: STRINGS.WORLDS.TERRAMOONLET.DESCRIPTION
+nameTable: TERRA
+asteroidIcon: asteroid_sandstone_start_kanim
+disableWorldTraits: true
+
+worldsize:
+  X: 144
+  Y: 256
+layoutMethod: PowerTree
+
+defaultsOverrides:
+  data:
+    OverworldDensityMin: 18
+    OverworldDensityMax: 18
+    OverworldSampleBehaviour: PoissonDisk
+
+startSubworldName: expansion1::subworlds/sandstone/SandstoneStart
+startingBaseTemplate: bases/sandstoneBase
+startingBasePositionHorizontal:
+  min: 0.5
+  max: 0.5
+startingBasePositionVertical:
+  min: 0.46
+  max: 0.46
+
+subworldFiles:
+  - name: subworlds/space/Space
+  - name: subworlds/magma/Bottom
+  - name: subworlds/sandstone/SandstoneMiniMetal
+  - name: subworlds/sandstone/SandstoneMiniWater
+  - name: subworlds/sandstone/SandstoneMiniAlgae
+  - name: expansion1::subworlds/sandstone/SandstoneMiniWater
+  - name: expansion1::subworlds/sandstone/SandstoneMini
+  - name: expansion1::subworlds/sandstone/SandstoneStart
+    overridePower: 4
+  - name: expansion1::subworlds/space/IcySurface
+    overridePower: 1.3
+  - name: expansion1::subworlds/oil/OilWells
+  - name: expansion1::subworlds/oil/OilSparse
+
+unknownCellsAllowedSubworlds:
+  # Space
+  - tagcommand: DistanceFromTag
+    tag: AtSurface
+    minDistance: 0
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - subworlds/space/Space
+  # Surface
+  - tagcommand: DistanceFromTag
+    tag: AtSurface
+    minDistance: 2
+    maxDistance: 2
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/space/IcySurface
+  # World Fill
+  - tagcommand: DistanceFromTag
+    tag: AtSurface
+    minDistance: 3
+    maxDistance: 99
+    command: Replace
+    subworldNames:
+      - subworlds/sandstone/SandstoneMiniMetal
+      - subworlds/sandstone/SandstoneMiniWater
+      - subworlds/sandstone/SandstoneMiniAlgae
+  # Ring-1/expanded start
+  - tagcommand: DistanceFromTag
+    tag: AtStart
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/sandstone/SandstoneMini
+      - expansion1::subworlds/sandstone/SandstoneMiniWater
+  # Above Core
+  - tagcommand: DistanceFromTag
+    tag: AtDepths
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/oil/OilWells
+      - expansion1::subworlds/oil/OilSparse
+  # Core
+  - tagcommand: DistanceFromTag
+    tag: AtDepths
+    minDistance: 0
+    maxDistance: 0
+    command: Replace
+    subworldNames:
+      - subworlds/magma/Bottom
+
+worldTemplateRules:
+  - names:
+      - geysers/steam
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        subworldNames:
+          - subworlds/sandstone/SandstoneMiniMetal
+          - subworlds/sandstone/SandstoneMiniWater
+          - subworlds/sandstone/SandstoneMiniAlgae
+          - expansion1::subworlds/sandstone/SandstoneMini
+          - expansion1::subworlds/sandstone/SandstoneMiniWater
+  - names:
+      - geysers/slush_water
+      - geysers/salt_water
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        subworldNames:
+          - subworlds/sandstone/SandstoneMiniMetal
+          - subworlds/sandstone/SandstoneMiniWater
+          - subworlds/sandstone/SandstoneMiniAlgae
+          - expansion1::subworlds/sandstone/SandstoneMini
+          - expansion1::subworlds/sandstone/SandstoneMiniWater
+  # Oil
+  - names:
+    - poi/oil/small_oilpockets_geyser_a
+    - poi/oil/small_oilpockets_geyser_b
+    - poi/oil/small_oilpockets_geyser_c
+    - poi/oil/small_oilpockets_geyser_d
+    - poi/oil/small_oilpockets_geyser_e
+    - poi/oil/small_oilpockets_geyser_f
+    - poi/oil/small_oilpockets_geyser_g
+    - poi/oil/small_oilpockets_geyser_h
+    listRule: GuaranteeSomeTryMore
+    someCount: 2
+    moreCount: 3
+    priority: 105
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [ OilField ]
+      - command: IntersectWith
+        tagcommand: DistanceFromTag
+        tag: AtDepths
+        minDistance: 0
+        maxDistance: 2
+  # Curated Geysers
+  - names:
+    - geysers/steam
+    - geysers/chlorine_gas
+    - geysers/hot_po2
+    - geysers/methane
+    - geysers/filthy_water
+    - geysers/liquid_co2
+    - geysers/hot_hydrogen
+    - geysers/big_volcano
+    listRule: TryOne
+    times: 3
+    allowDuplicates: true
+    priority: 50
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 2
+        maxDistance: 10
+      - command: ExceptWith
+        zoneTypes: [ Space ]
+      - command: ExceptWith
+        tagcommand: AtTag
+        tag: NoGlobalFeatureSpawning
+  # Gravitas
+  - names:
+    - expansion1::poi/warp/sender
+    - expansion1::poi/warp/receiver
+    - expansion1::poi/warp/teleporter
+    listRule: GuaranteeAll
+    priority: 90
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 1
+        maxDistance: 2
+      - command: IntersectWith
+        zoneTypes: [ Sandstone, Wasteland, BoggyMarsh, ToxicJungle ]
+      - command: ExceptWith
+        tagcommand: AtTag
+        tag: NoGravitasFeatures
+  - names:
+    - expansion1::poi/genericGravitas/poi_office
+    listRule: GuaranteeAll
+    priority: 90
+    allowedCellsFilter:
+      - command: Replace
+        tagcommand: DistanceFromTag
+        tag: AtStart
+        minDistance: 1
+        maxDistance: 99
+      - command: ExceptWith
+        tagcommand: AtTag
+        tag: NoGravitasFeatures
+      - command: ExceptWith
+        tagcommand: DistanceFromTag
+        tag: AtDepths
+        minDistance: 0
+        maxDistance: 2
+      - command: ExceptWith
+        tagcommand: DistanceFromTag
+        tag: AtSurface
+        minDistance: 0
+        maxDistance: 2

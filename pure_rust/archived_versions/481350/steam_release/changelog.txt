@@ -1,0 +1,7 @@
+v0.1.3:
+  * ensure warp planet and hatch planet are always within steam rocket range
+v0.1.2:
+  * update for ONI version 481350 which modified geyser creation details
+v0.1.1:
+  * added a small amount of coal to the starting world's space border
+v0.1: initial release

@@ -1,0 +1,121 @@
+name: STRINGS.WORLDS.PURESANDSTONEMOONLET.NAME
+description: STRINGS.WORLDS.PURESANDSTONEMOONLET.DESCRIPTION
+nameTable: SANDSTONE
+asteroidIcon: asteroid_sandstone_start_kanim
+disableWorldTraits: true
+
+worldsize:
+  X: 64
+  Y: 96
+layoutMethod: PowerTree
+
+defaultsOverrides:
+  data:
+    DrawWorldBorderOverVacuum: false
+    DrawWorldBorder: true
+    WorldBorderThickness: 2
+    WorldBorderRange: 1
+    OverworldDensityMin: 15
+    OverworldDensityMax: 15
+    OverworldAvoidRadius: 5
+    OverworldSampleBehaviour: PoissonDisk
+    POIPadding: 1
+
+# no special feature
+
+# List all the subworld files to load
+subworldFiles:
+  - name: subworlds/space/Space
+  - name: expansion1::subworlds/space/SpaceWithSandyBorder
+  - name: expansion1::subworlds/sandstone/SandstoneMini
+  - name: expansion1::subworlds/sandstone/SandstoneMiniWater
+  - name: subworlds/sandstone/Sandstone
+  - name: subworlds/sandstone/SandstoneMiniWater
+  - name: subworlds/sandstone/SandstoneMiniMetal
+  - name: subworlds/sandstone/SandstoneMiniAlgae
+#  - name: expansion1::subworlds/magma/BottomSmall
+
+fixedTraits:
+  - sunlightMedHigh
+  - cosmicRadiationMed
+
+unknownCellsAllowedSubworlds:
+  - tagcommand: Default
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/sandstone/SandstoneMini
+      - expansion1::subworlds/sandstone/SandstoneMiniWater
+      - subworlds/sandstone/Sandstone
+      - subworlds/sandstone/SandstoneMiniWater
+      - subworlds/sandstone/SandstoneMiniMetal
+      - subworlds/sandstone/SandstoneMiniAlgae
+  - tagcommand: AtTag
+    tag: AtSurface
+    command: Replace
+    subworldNames:
+      - subworlds/space/Space
+  - tagcommand: DistanceFromTag # Space with crust
+    tag: AtSurface
+    minDistance: 1
+    maxDistance: 1
+    command: Replace
+    subworldNames:
+      - expansion1::subworlds/space/SpaceWithSandyBorder
+#  - tagcommand: DistanceFromTag
+#    tag: AtDepths
+#    minDistance: 0
+#    maxDistance: 0
+#    command: Replace
+#    subworldNames:
+#      - expansion1::subworlds/magma/BottomSmall
+
+worldTemplateRules:
+  # one water of some sort
+  - names:
+      - geysers/slush_water
+      - geysers/steam
+      - geysers/hot_water
+      - geysers/filthy_water
+      - geysers/salt_water
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Sandstone]
+  # a volcano for feeding stone hatches
+  - names:
+      - geysers/small_volcano
+      - geysers/big_volcano
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Sandstone]
+  # copper because why not
+  - names:
+      - geysers/molten_copper
+    listRule: GuaranteeOne
+    priority: 100
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Sandstone]
+  # 1 other somewhat random geyser
+  - names:
+    - geysers/slimy_po2
+    - geysers/methane
+    - geysers/chlorine_gas
+    - geysers/hot_co2
+    - geysers/hot_hydrogen
+    - geysers/hot_po2
+    - geysers/hot_steam
+    - geysers/hot_water
+    - geysers/oil_drip
+    - geysers/small_volcano
+    - geysers/big_volcano
+    listRule: TryOne
+    allowDuplicates: true
+    priority: 50
+    allowedCellsFilter:
+      - command: Replace
+        zoneTypes: [Sandstone]
+

@@ -19,4 +19,4 @@ if [ -f "lib" ]; then LIBDIR="lib/"; else LIBDIR="${DEFAULT_LIBDIR}"; fi
 
 # compile it
 set -x
-mcs -lib:"${LIBDIR}" -r:"${LIBS}" -t:library -out:"${OUTPUT_DLL}" "${INPUT_CS}"
+mcs -optimize -lib:"${LIBDIR}" -r:"${LIBS}" -t:library -out:"${OUTPUT_DLL}" ${INPUT_CS}

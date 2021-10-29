@@ -89,7 +89,7 @@ namespace RationalPriority
         // heuristic function determining relative task importance.
         // as internally the value 0 is used to mean "do not ever do this",
         // the returned value here should always be non-negative.
-        public static int TaskImportance(Chore.Precondition.Context task, bool debug = false)
+        public static int TaskImportance(Chore.Precondition.Context task)
         {
             // assume that priority zero means "do not ever do this"
             if (task.personalPriority <= 0) { return 0; }
@@ -117,8 +117,6 @@ namespace RationalPriority
             // ahh, the beauty of linear functions
             int total_prio = pref * prio;
             
-            if (debug) { Debug.LogFormat("pref/prio/total : {0} / {1} / {2}", pref, prio, total_prio); }
-            
             // navigation cost can be taken to be linear in distance.
             // we've already used 16 bits so we can use at maximum 14 here.
             // let's assume a minimum meaningful distance of 12.8 tiles,
@@ -137,7 +135,7 @@ namespace RationalPriority
             // this gives a spread of 1 (65536+) to 1023 (135-).
             // it's not as pretty as it could be,
             // but the steps match those of the cost calc at the low end.
-            if (debug) { Debug.LogFormat("dist/total_prio : {0} / {1}", distance, total_prio); }
+            
             // bits used: 8 + 8 + 10 = 26.
             return total_prio;
         }

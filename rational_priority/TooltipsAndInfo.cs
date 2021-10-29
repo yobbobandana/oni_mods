@@ -359,7 +359,7 @@ namespace RationalPriority
             //Debug.LogFormat("  cost: {0}", out_context.cost);
             //Debug.LogFormat("  has solid transfer arm: {0}", __instance.consumerState.hasSolidTransferArm);
             Debug.LogFormat("  task importance: {0}",
-                Util.TaskImportance(out_context, true));
+                Util.TaskImportance(out_context));
             Debug.LogFormat("  {0} successful contexts",
                 ___preconditionSnapshot.succeededContexts.Count
             );

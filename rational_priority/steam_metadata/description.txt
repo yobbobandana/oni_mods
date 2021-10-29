@@ -4,7 +4,7 @@ By default duplicant task prioritization is inflexible, irrational, and quite fr
 [list]
  [*] Duplicants no longer prioritize tasks based on a fixed importance heirarchy. In stead they will weigh the task priority, their personal preferences, and the travel distance required, making an informed decision based on all of these factors combined. This means a lower priority task nearby may outweigh a higher priority task far away. Similarly a nearby high priority task may outweigh a low priority task for which they have higher personal preference. In general, their task selection will simply make more sense.
 [/list]
-Additionally the following minor features are included.
+Additionally the following minor features are included:
 [list]
  [*] "out of world" duplicants are no longer listed in the errands tab of the selection info window.
 [/list]
@@ -15,9 +15,26 @@ Most of the time you won't need to worry about task selection with this mod. If 
 
 Without this mod a duplicant with a higher personal digging preference will never do another task when there is digging to be done, no matter how high you set the priority of the other task, or how low the priority of the digging. With this mod a duplicant with a digging preference may still decide to clean that toilet, if you set the priority high enough and they are nearby.
 
-It also greatly reduces instances of duplicants running across the map for trivial reasons. If there is a task right in front of them, they will prefer to do that before running off to do something far away.
+It also greatly reduces instances of duplicants running across the map for trivial reasons. If there is a task right in front of them, they will prefer to do that before running off to do something far away. Of course if the far away task is significantly more important, they may still run to do it.
 
 In general, an increase of +1 priority on a task will cause a duplicant to walk twice as far to do it. An increase of one personal preference level will cause a duplicant to walk 4 times as far, all else being equal. But as i said above you probably don't need to care. Just set the priorities as you think they should be, and treat your duplicants with the respect they hopefully now deserve.
+
+[h2]F.A.Q.[/h2]
+
+[b]Q:[/b] [i]Doesn't this mean they won't ever go do far away tasks even if i set them to high priority?[/i]
+[b]A:[/b] No it doesn't. They will still go do high priority tasks far away. They will just be rational about it. If you are having problems with this please let me know, but if you just think it might be a problem and you haven't actually tried the mod... try the mod.
+
+[b]Q:[/b] [i]Will my existing colony explode if I install this mod? I have things set up just the way I like them.[/i]
+[b]A:[/b] Things might need a little tweaking but it shouldn't ruin existing setups. High priority tasks are more important, low priority tasks are less important, this basic premise is still the same. Where it's most likely to cause problems is where this premise is not respected by the original system. You can always "Save As" before you start, if it makes you feel more at ease. This mod doesn't affect save files at all.
+
+[h2]Tips for getting the most out of the new priority system[/h2]
+[list]
+[*]Use the lower priority numbers, not just the higher numbers. 5 to 9 only isn't always enough.
+[*]Set dupe priorities in the priorities screen. Specialists get things done. Generalists keep your colony running.
+[*]The "!!" priority still overrides everything else.
+[*]If you have tasks that need doing frequently far away from your base, consider stationing some dupes there more permanently. It's cheaper to ship food and oxygen than to ship dupes back and forth.
+[*]There is a somewhat hidden "Enable Proximity" setting in the game. It's best to leave this in its default [b][i]off[/i][/b] state. When it is on the game removes some useful priority information. This mod always takes proximity into account regardless of the setting.
+[/list]
 
 [h2]Notes and Known Issues[/h2]
 
@@ -37,3 +54,7 @@ Source code for this mod can be found on github, [url=https://github.com/yobboba
 
 As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as you also abide by Klei's terms of use.
 
+[h2]Changelog[/h2]
+
+v0.2: clarify todo list tooltips, and correct errands tab tooltips.
+v0.1: initial release

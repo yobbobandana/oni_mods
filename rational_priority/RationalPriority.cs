@@ -30,8 +30,8 @@ using System.Runtime.CompilerServices; // MethodImpl
 //   * personal priority 1 and task priority 1
 //   * personal priority 3 and task priority 5
 //   * personal priority 5 and task priority 9
-//   * a priority 5 task 12.8m away and a priority 6 task 25.6m away
-//   * any otherwise equal-priority task within 12.8m of the duplicant
+//   * a priority 5 task 15m away and a priority 6 task 30m away
+//   * any otherwise equal-priority task within 13.6m of the duplicant
 // 
 // Navigation distance is valued linearly,
 // while task and personal priority are valued exponentially relative to this.
@@ -51,7 +51,6 @@ using System.Runtime.CompilerServices; // MethodImpl
 // TODO:
 //   * adaptive storage priority based on filled / empty amount
 //   * better emergency dupe selection
-//   * tooltips in errands tab for building need updating
 //   * reduced importance of storage tasks for tiny amounts of material
 //   * importance reduction proportionate to wasted carrying capacity
 

@@ -1,0 +1,2 @@
+v0.2: clarify todo list tooltips, and correct errands tab tooltips.
+v0.1: initial release

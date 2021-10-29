@@ -79,7 +79,8 @@ namespace RationalPriority
     {
         // whether or not to respect the global "enable proximity" setting.
         // if this is false, proximity is always taken into account.
-        public static bool respectEnableProximity = false;
+        // game proximity setting is Game.Instance.advancedPersonalPriorities.
+        //public static bool respectEnableProximity = false;
         
         // whether to display detailed debugging information in chore tooltips.
         public static bool debugTooltips = false;
@@ -118,29 +119,25 @@ namespace RationalPriority
             
             if (debug) { Debug.LogFormat("pref/prio/total : {0} / {1} / {2}", pref, prio, total_prio); }
             
-            // maybe respect the "enable proximity" setting
-            if (!respectEnableProximity || Game.Instance.advancedPersonalPriorities)
-            {
-                // navigation cost can be taken to be linear in distance.
-                // we've already used 16 bits so we can use at maximum 14 here.
-                // let's assume a minimum meaningful distance of 12.8 tiles,
-                // and a maximum meaningful distance of 6553.6 tiles,
-                // giving a spread of about 10 bits.
-                if (task.cost >= 65536) { return total_prio; }
-                if (task.cost < 136) { return total_prio * 1023; }
-                // to match the more efficient cost calculation below,
-                // we discard the bottom three bits of the cost.
-                // this still gives sub-tile accuracy,
-                // as cost is in units of 1/10 of a tile.
-                int distance = task.cost >> 3;
-                // to keep the result as an integer,
-                // multiply by the maximum possible value then divide.
-                total_prio *= (16383 / distance);
-                // this gives a spread of 1 (65536+) to 1023 (135-).
-                // it's not as pretty as it could be,
-                // but the steps match those of the cost calc at the low end.
-                if (debug) { Debug.LogFormat("dist/total_prio : {0} / {1}", distance, total_prio); }
-            }
+            // navigation cost can be taken to be linear in distance.
+            // we've already used 16 bits so we can use at maximum 14 here.
+            // let's assume a minimum meaningful distance of 12.8 tiles,
+            // and a maximum meaningful distance of 6553.6 tiles,
+            // giving a spread of about 10 bits.
+            if (task.cost >= 65536) { return total_prio; }
+            if (task.cost < 136) { return total_prio * 1023; }
+            // to match the more efficient cost calculation below,
+            // we discard the bottom three bits of the cost.
+            // this still gives sub-tile accuracy,
+            // as cost is in units of 1/10 of a tile.
+            int distance = task.cost >> 3;
+            // to keep the result as an integer,
+            // multiply by the maximum possible value then divide.
+            total_prio *= (16383 / distance);
+            // this gives a spread of 1 (65536+) to 1023 (135-).
+            // it's not as pretty as it could be,
+            // but the steps match those of the cost calc at the low end.
+            if (debug) { Debug.LogFormat("dist/total_prio : {0} / {1}", distance, total_prio); }
             // bits used: 8 + 8 + 10 = 26.
             return total_prio;
         }
@@ -161,20 +158,16 @@ namespace RationalPriority
             int pref = 1 << ((5 - task.personalPriority) << 1);
             int prio = 1 << (9 - task.masterPriority.priority_value);
             
-            if (!respectEnableProximity || Game.Instance.advancedPersonalPriorities)
-            {
-                // we don't really need sub-tile precision
-                // so just eat the bottom 3 bits.
-                // this lets us easily use 16 bits for distance cost,
-                // giving a maximum meaningful distance of 6553.5 tiles,
-                // and a minimum meaningful distance of 13.6 tiles.
-                // 6.5km seems a reasonable upper limit for distance costs.
-                if (task.cost < 136) { return (pref * prio) << 4; }
-                if (task.cost >= 65536) { return (pref * prio) << 13; }
-                // bits used: 1 + 8 + 8 + 13 = 30
-                return pref * prio * (task.cost >> 3);
-            }
-            return pref * prio;
+            // we don't really need sub-tile precision
+            // so just eat the bottom 3 bits.
+            // this lets us easily use 16 bits for distance cost,
+            // giving a maximum meaningful distance of 6553.5 tiles,
+            // and a minimum meaningful distance of 13.6 tiles.
+            // 6.5km seems a reasonable upper limit for distance costs.
+            if (task.cost < 136) { return (pref * prio) << 4; }
+            if (task.cost >= 65536) { return (pref * prio) << 13; }
+            // bits used: 1 + 8 + 8 + 13 = 30
+            return pref * prio * (task.cost >> 3);
         }
         
         // simple version of task cost calc, for use in sort functions.

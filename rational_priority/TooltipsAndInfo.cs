@@ -4,6 +4,130 @@ using System.Collections.Generic; // List
 
 namespace RationalPriority
 {
+    // ----------------------
+    // shared tooltip details
+    // ----------------------
+    
+    // used by tooltips both in the todo list and the errands tab
+    public class Tooltips
+    {
+        // A breakdown of the importance calculation for the given task.
+        public static LocString DETAILS_BY_IMPORTANCE = string.Concat(
+            "{Description}\n\n",
+            "Errand Type: {Groups}\n\n",
+            "Total ", STRINGS.UI.PRE_KEYWORD, "Task Importance", STRINGS.UI.PST_KEYWORD, ": {TotalPriority}\n",
+            "    • {Name}'s {BestGroup} Preference: {PersonalPriorityValue} ({PersonalPriority})\n",
+            "    • This {Building}'s Importance: {BuildingPriorityValue} (Priority {BuildingPriority})\n",
+            "    • Errand Proximity: {ProximityValue} ({TravelDistance}m)\n",
+            "    • All {BestGroup} Errands: {TypePriority}\n\n",
+            "Total Importance = ({PersonalPriorityValue} * {BuildingPriorityValue} * {ProximityValue}) + {TypePriority} = {TotalPriority}"
+        );
+        
+        // The same as above but framed as cost rather than importance.
+        public static LocString DETAILS_BY_COST = string.Concat(
+            "{Description}\n\n",
+            "Errand Type: {Groups}\n\n",
+            "Total ", STRINGS.UI.PRE_KEYWORD, "Task Cost", STRINGS.UI.PST_KEYWORD, ": {TotalCost}\n",
+            "    • {Name}'s {BestGroup} Preference: {PersonalPriorityCost} ({PersonalPriority})\n",
+            "    • This {Building}'s Importance: {BuildingPriorityCost} (Priority {BuildingPriority})\n",
+            "    • Travel Cost: {TravelCost} ({TravelDistance}m)\n",
+            "    • All {BestGroup} Errands: {TypeCost}\n\n",
+            "Total Cost = ({PersonalPriorityCost} * {BuildingPriorityCost} * {TravelCost}) + {TypeCost} = {TotalCost}"
+        );
+        
+        // Return a generic tooltip with detailed chore importance breakdown.
+        // a "{Description}" tag will remain in the returned string,
+        // but everything else will be filled out automatically.
+        public static string ByImportance(
+            Chore.Precondition.Context context,
+            ChoreConsumer choreConsumer
+        ) {
+            string __result = DETAILS_BY_IMPORTANCE;
+            __result = __result.Replace("{Name}", choreConsumer.name);
+            __result = __result.Replace("{Errand}", GameUtil.GetChoreName(context.chore, context.data));
+            string choreGroups = GameUtil.ChoreGroupsForChoreType(context.chore.choreType);
+            __result = __result.Replace("{Groups}", choreGroups);
+            ChoreGroup choreGroup = BestPriorityGroup(context, choreConsumer);
+            __result = __result.Replace("{BestGroup}", (choreGroup != null) ? choreGroup.Name : context.chore.choreType.Name);
+            int personalPriority = choreConsumer.GetPersonalPriority(context.chore.choreType);
+            __result = __result.Replace("{PersonalPriority}", JobsTableScreen.priorityInfo[personalPriority].name.text);
+            __result = __result.Replace("{PersonalPriorityValue}", (1 << (personalPriority*2-2)).ToString());
+            __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
+            int taskPriority = context.masterPriority.priority_value;
+            __result = __result.Replace("{BuildingPriorityValue}", (1 << (taskPriority-1)).ToString());
+            __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());
+            float basePriority = (float)context.priority / 10000f;
+            __result = __result.Replace("{TypePriority}", basePriority.ToString());
+            // this follows the cost calc, and is thus a bit ugly
+            int proximityValue;
+            if (context.cost < 136) { proximityValue = 1023; }
+            else if (context.cost >= 65536) { proximityValue = 1; }
+            else { proximityValue = 16383 / (context.cost >> 3); }
+            __result = __result.Replace("{ProximityValue}", proximityValue.ToString());
+            __result = __result.Replace("{TravelDistance}", ((float)context.cost/10.0f).ToString("#,0.#"));
+            double totalPriority = (double)Util.TaskImportance(context) + (double)basePriority;
+            __result = __result.Replace("{TotalPriority}", totalPriority.ToString("#,0.###"));
+            return __result;
+        }
+        
+        // Return a generic tooltip with detailed chore cost breakdown.
+        // A "{Description}" tag will remain in the returned string,
+        // but everything else will be filled out automatically.
+        public static string ByCost(
+            Chore.Precondition.Context context,
+            ChoreConsumer choreConsumer
+        ) {
+            string __result = DETAILS_BY_COST;
+            __result = __result.Replace("{Name}", choreConsumer.name);
+            __result = __result.Replace("{Errand}", GameUtil.GetChoreName(context.chore, context.data));
+            string choreGroups = GameUtil.ChoreGroupsForChoreType(context.chore.choreType);
+            __result = __result.Replace("{Groups}", choreGroups);
+            ChoreGroup choreGroup = BestPriorityGroup(context, choreConsumer);
+            __result = __result.Replace("{BestGroup}", (choreGroup != null) ? choreGroup.Name : context.chore.choreType.Name);
+            int personalPriority = choreConsumer.GetPersonalPriority(context.chore.choreType);
+            __result = __result.Replace("{PersonalPriority}", JobsTableScreen.priorityInfo[personalPriority].name.text);
+            __result = __result.Replace("{PersonalPriorityCost}", (1 << ((5 - personalPriority) << 1)).ToString());
+            __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
+            int taskPriority = context.masterPriority.priority_value;
+            __result = __result.Replace("{BuildingPriorityCost}", (1 << (9 -taskPriority)).ToString());
+            __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());
+            float basePriority = (float)context.priority / 10000f;
+            __result = __result.Replace("{TypeCost}", (1f - basePriority).ToString());
+            int travelCost = context.cost;
+            if (travelCost < 128) { travelCost = 16; }
+            else if (travelCost >= 65536) { travelCost = 8192; }
+            else { travelCost >>= 3; }
+            __result = __result.Replace("{TravelCost}", travelCost.ToString());
+            __result = __result.Replace("{TravelDistance}", ((float)context.cost/10.0f).ToString("#,0.#"));
+            double totalCost = (double)Util.TaskCost(context) + 1d - (double)basePriority;
+            __result = __result.Replace("{TotalCost}", totalCost.ToString("#,0.###"));
+            return __result;
+        }
+        
+        // this is the same as in the base code.
+        // it's just private so duplicating it was the easiest thing to do...
+        // ref: MinionTodoChoreEntry
+        public static ChoreGroup BestPriorityGroup(
+            Chore.Precondition.Context context,
+            ChoreConsumer choreConsumer)
+        {
+            ChoreGroup choreGroup = null;
+            if (context.chore.choreType.groups.Length != 0)
+            {
+                choreGroup = context.chore.choreType.groups[0];
+                for (int i = 1; i < context.chore.choreType.groups.Length; i++)
+                {
+                    if (choreConsumer.GetPersonalPriority(choreGroup) < choreConsumer.GetPersonalPriority(context.chore.choreType.groups[i]))
+                    {
+                        choreGroup = context.chore.choreType.groups[i];
+                    }
+                }
+            }
+            return choreGroup;
+        }
+    }
+    
+    
     // --------------------------------------
     // chore tooltips for duplicant todo list
     // --------------------------------------
@@ -20,17 +144,7 @@ namespace RationalPriority
             "{BestGroup} priority: {TypePriority}"
         );
         
-        // "Basic" and "High" class errands (normal tasks and downtime)
-        public static LocString TOOLTIP_NORMAL = string.Concat(
-            "{Description}\n\n",
-            "Errand Type: {Groups}\n\n",
-            "Total ", STRINGS.UI.PRE_KEYWORD, "Task Difficulty", STRINGS.UI.PST_KEYWORD, ": {TotalCost}\n",
-            "    • {Name}'s {BestGroup} Preference: {PersonalPriorityCost} ({PersonalPriority})\n",
-            "    • This {Building}'s Importance: {BuildingPriorityCost} (Priority {BuildingPriority})\n",
-            "    • Travel Cost: {TravelCost} ({TravelDistance}m)\n",
-            "    • All {BestGroup} Errands: {TypeCost}\n\n",
-            "Total Difficulty = ({PersonalPriorityCost} * {BuildingPriorityCost} * {TravelCost}) + {TypeCost} = {TotalCost}"
-        );
+        // "Basic" and "High" class errands will use the shared tooltips above.
         
         // "Personal Needs" class errands (such as Eat)
         public static LocString TOOLTIP_PERSONAL = string.Concat(
@@ -56,32 +170,12 @@ namespace RationalPriority
             "{BestGroup} priority: {TypePriority}"
         );
         
-        // this is the same as in the base code.
-        // it's just private so duplicating it was the easiest thing to do...
-        private static ChoreGroup BestPriorityGroup(Chore.Precondition.Context context, ChoreConsumer choreConsumer)
-        {
-            ChoreGroup choreGroup = null;
-            if (context.chore.choreType.groups.Length != 0)
-            {
-                choreGroup = context.chore.choreType.groups[0];
-                for (int i = 1; i < context.chore.choreType.groups.Length; i++)
-                {
-                    if (choreConsumer.GetPersonalPriority(choreGroup) < choreConsumer.GetPersonalPriority(context.chore.choreType.groups[i]))
-                    {
-                        choreGroup = context.chore.choreType.groups[i];
-                    }
-                }
-            }
-            return choreGroup;
-        }
-        
         public static bool Prefix(
-            MinionTodoChoreEntry __instance,
+            //MinionTodoChoreEntry __instance,
             Chore.Precondition.Context context,
             ChoreConsumer choreConsumer,
             ref string __result
         ) {
-            bool flag = context.chore.masterPriority.priority_class == PriorityScreen.PriorityClass.basic || context.chore.masterPriority.priority_class == PriorityScreen.PriorityClass.high;
             PriorityScreen.PriorityClass c = context.chore.masterPriority.priority_class;
             if (c == PriorityScreen.PriorityClass.idle) {
                 __result = TOOLTIP_IDLE;
@@ -91,40 +185,18 @@ namespace RationalPriority
                 __result = TOOLTIP_EMERGENCY;
             } else if (c == PriorityScreen.PriorityClass.compulsory) {
                 __result = TOOLTIP_COMPULSORY;
-            } else {
-                __result = TOOLTIP_NORMAL;
+            } else { // basic || high
+                __result = Tooltips.ByImportance(context, choreConsumer);
             }
             __result = __result.Replace("{Description}", (context.chore.driver == choreConsumer.choreDriver) ? UI.UISIDESCREENS.MINIONTODOSIDESCREEN.TOOLTIP_DESC_ACTIVE : UI.UISIDESCREENS.MINIONTODOSIDESCREEN.TOOLTIP_DESC_INACTIVE);
             __result = __result.Replace("{IdleDescription}", (context.chore.driver == choreConsumer.choreDriver) ? UI.UISIDESCREENS.MINIONTODOSIDESCREEN.TOOLTIP_IDLEDESC_ACTIVE : UI.UISIDESCREENS.MINIONTODOSIDESCREEN.TOOLTIP_IDLEDESC_INACTIVE);
+            // {Name} and {Errand} can also appear in the filled {Description}
             __result = __result.Replace("{Name}", choreConsumer.name);
             __result = __result.Replace("{Errand}", GameUtil.GetChoreName(context.chore, context.data));
-            string choreGroups = GameUtil.ChoreGroupsForChoreType(context.chore.choreType);
-            __result = __result.Replace("{Groups}", choreGroups);
-            ChoreGroup choreGroup = BestPriorityGroup(context, choreConsumer);
+            ChoreGroup choreGroup = Tooltips.BestPriorityGroup(context, choreConsumer);
             __result = __result.Replace("{BestGroup}", (choreGroup != null) ? choreGroup.Name : context.chore.choreType.Name);
-            int personalPriority = (flag ? choreConsumer.GetPersonalPriority(context.chore.choreType) : 0);
-            __result = __result.Replace("{PersonalPriority}", JobsTableScreen.priorityInfo[personalPriority].name.text);
-            //__result = __result.Replace("{PersonalPriorityValue}", (1 << (personalPriority*2-2)).ToString());
-            __result = __result.Replace("{PersonalPriorityCost}", (1 << ((5 - personalPriority) << 1)).ToString());
-            __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
-            int taskPriority = (flag ? context.masterPriority.priority_value : 0);
-            //__result = __result.Replace("{BuildingPriorityValue}", (1 << (taskPriority-1)).ToString());
-            __result = __result.Replace("{BuildingPriorityCost}", (1 << (9 -taskPriority)).ToString());
-            __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());
             float basePriority = (float)context.priority / 10000f;
             __result = __result.Replace("{TypePriority}", basePriority.ToString());
-            __result = __result.Replace("{TypeCost}", (1f - basePriority).ToString());
-            //int travelCost = (context.cost >> 7) + 1;
-            //if (travelCost < 1) { travelCost = 1; }
-            int travelCost = context.cost;
-            if (travelCost < 128) { travelCost = 128; }
-            if (travelCost > 65536) { travelCost = 65536; }
-            __result = __result.Replace("{TravelCost}", travelCost.ToString());
-            __result = __result.Replace("{TravelDistance}", ((float)context.cost/10.0f).ToString("#,0.#"));
-            //double totalPriority = (double)Util.TaskImportance(context) + (double)basePriority;
-            //__result = __result.Replace("{TotalPriority}", totalPriority.ToString("#,0.###"));
-            double totalCost = (double)Util.TaskCost(context) + 1d - (double)basePriority;
-            __result = __result.Replace("{TotalCost}", totalCost.ToString("#,0.###"));
             
             // maybe tack on a bunch of debug info
             if (Util.debugTooltips) {
@@ -213,6 +285,34 @@ namespace RationalPriority
             }*/
             text += "\n";
             return text;
+        }
+    }
+    
+    
+    // ---------------------------------------
+    // chore tooltips for building errands tab
+    // ---------------------------------------
+    
+    // rewrites the chore tooltips for the adjusted priority system
+    [HarmonyPatch(typeof(BuildingChoresPanelDupeRow))]
+    [HarmonyPatch("TooltipForDupe")]
+    public class ErrandsTabTooltipsOverride
+    {
+        public static bool Prefix(
+            Chore.Precondition.Context context,
+            ChoreConsumer choreConsumer,
+            int rank,
+            ref string __result
+        ) {
+            // only need to override if we're showing the calculation
+            if (!context.IsPotentialSuccess()) { return true; }
+            __result = Tooltips.ByImportance(context, choreConsumer);
+            __result = __result.Replace("{Description}", (context.chore.driver == choreConsumer.choreDriver) ? UI.DETAILTABS.BUILDING_CHORES.DUPE_TOOLTIP_DESC_ACTIVE : UI.DETAILTABS.BUILDING_CHORES.DUPE_TOOLTIP_DESC_INACTIVE);
+            // these fields are sometimes added by the description:
+            __result = __result.Replace("{Name}", choreConsumer.name);
+            __result = __result.Replace("{Errand}", GameUtil.GetChoreName(context.chore, context.data));
+            __result = __result.Replace("{Rank}", rank.ToString());
+            return false;
         }
     }
     

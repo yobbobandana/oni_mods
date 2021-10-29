@@ -122,15 +122,23 @@ namespace RationalPriority
             if (!respectEnableProximity || Game.Instance.advancedPersonalPriorities)
             {
                 // navigation cost can be taken to be linear in distance.
-                // assuming this never exceeds 2^^15 or so,
-                // it should all work out.
-                // let's also assume a minimum significant distance.
-                // it's rather trivial to make that 12.8 tiles so why not.
-                // internal "cost" here is approximately tile distance * 10.
-                int distance = (task.cost >> 7) + 1;
-                if (task.cost <= 0 || distance < 1) { distance = 1; }
-                if (distance > 256) { distance = 256; }
-                total_prio *= (256 / distance);
+                // we've already used 16 bits so we can use at maximum 14 here.
+                // let's assume a minimum meaningful distance of 12.8 tiles,
+                // and a maximum meaningful distance of 6553.6 tiles,
+                // giving a spread of about 10 bits.
+                if (task.cost >= 65536) { return total_prio; }
+                if (task.cost < 136) { return total_prio * 1023; }
+                // to match the more efficient cost calculation below,
+                // we discard the bottom three bits of the cost.
+                // this still gives sub-tile accuracy,
+                // as cost is in units of 1/10 of a tile.
+                int distance = task.cost >> 3;
+                // to keep the result as an integer,
+                // multiply by the maximum possible value then divide.
+                total_prio *= (16383 / distance);
+                // this gives a spread of 1 (65536+) to 1023 (135-).
+                // it's not as pretty as it could be,
+                // but the steps match those of the cost calc at the low end.
                 if (debug) { Debug.LogFormat("dist/total_prio : {0} / {1}", distance, total_prio); }
             }
             // bits used: 8 + 8 + 10 = 26.
@@ -155,33 +163,27 @@ namespace RationalPriority
             
             if (!respectEnableProximity || Game.Instance.advancedPersonalPriorities)
             {
-                // minimum meaningful distance of 12.8 tiles.
-                // we could save some bits here by eating the bottom 7 bits,
-                // but there's not really any need at the moment
-                // and that does destroy precision.
-                if (task.cost < 128) { return (pref * prio) << 7; }
-                // pref and prio use up to 14 bits,
-                // so ensure cost doesn't use more than 16.
-                if (task.cost > 65536) { return (pref * prio) << 16; }
-                return pref * prio * task.cost;
+                // we don't really need sub-tile precision
+                // so just eat the bottom 3 bits.
+                // this lets us easily use 16 bits for distance cost,
+                // giving a maximum meaningful distance of 6553.5 tiles,
+                // and a minimum meaningful distance of 13.6 tiles.
+                // 6.5km seems a reasonable upper limit for distance costs.
+                if (task.cost < 136) { return (pref * prio) << 4; }
+                if (task.cost >= 65536) { return (pref * prio) << 13; }
+                // bits used: 1 + 8 + 8 + 13 = 30
+                return pref * prio * (task.cost >> 3);
             }
             return pref * prio;
         }
         
-        // simple versions of task cost calc, for use in sort functions.
-        // note: these will break if cost is greater than 2^^(31-9) or so,
-        // but as this corresponds to around 400,000 tiles
+        // simple version of task cost calc, for use in sort functions.
+        // as this doesn't include duplicant preference,
+        // it works for costs up to 2^^(31-9) or so.
+        // as this corresponds to around 400,000 tiles
         // and current game maps only have 100,000 tiles in total,
-        // this seems unlikely.
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int PrefPrioCost(int pref, int prio, int cost)
-        {
-            int prefCost = 1 << ((5 - pref) << 1);
-            int prioCost = 1 << (9 - prio);
-            if (cost < 128) { return (prefCost * prioCost) << 7; }
-            return prefCost * prioCost * cost;
-        }
-        // when no preference relevant or available
+        // this seems unlikely to ever be exceeded in practice.
+        // as such, there is no check.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PrioCost(int prio, int cost)
         {

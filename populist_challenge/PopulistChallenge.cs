@@ -71,7 +71,12 @@ namespace PopulistChallenge
             Klei.CustomSettings.ToggleSettingConfig cp =
                 (Klei.CustomSettings.ToggleSettingConfig)
                 Klei.CustomSettings.CustomGameSettingConfigs.CarePackages;
+            // only affect carepackages setting
             if (setting_id != cp.id) { return true; }
+            // don't affect the choice at worldgen
+            if (Game.Instance == null) { return true; }
+            // override to pretend the setting is "disabled",
+            // regardless of its actual status.
             __result = cp.off_level;
             return false;
         }

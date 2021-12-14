@@ -1,0 +1,2 @@
+v0.2: add ratiation blocking % for appropriate items when SO DLC is enabled.
+v0.1: initial release

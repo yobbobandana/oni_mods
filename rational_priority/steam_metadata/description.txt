@@ -56,5 +56,6 @@ As far as i am concerned, this mod is public domain. You can adapt, copy, modify
 
 [h2]Changelog[/h2]
 
+v0.3: tasks requiring learned skills are now considered slightly more important than unskilled tasks, so duplicants with those skills are more likely to do them.
 v0.2: clarify todo list tooltips, and correct errands tab tooltips.
 v0.1: initial release

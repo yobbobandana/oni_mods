@@ -20,7 +20,7 @@ namespace RationalPriority
             "    • This {Building}'s Importance: {BuildingPriorityValue} (Priority {BuildingPriority})\n",
             "    • Errand Proximity: {ProximityValue} ({TravelDistance}m)\n",
             "    • All {BestGroup} Errands: {TypePriority}\n\n",
-            "Total Importance = ({PersonalPriorityValue} * {BuildingPriorityValue} * {ProximityValue}) + {TypePriority} = {TotalPriority}"
+            "Total Importance = ({PersonalPriorityValue} × {BuildingPriorityValue} × {ProximityValue}) + {TypePriority} = {TotalPriority}"
         );
         
         // The same as above but framed as cost rather than importance.
@@ -32,7 +32,7 @@ namespace RationalPriority
             "    • This {Building}'s Importance: {BuildingPriorityCost} (Priority {BuildingPriority})\n",
             "    • Travel Cost: {TravelCost} ({TravelDistance}m)\n",
             "    • All {BestGroup} Errands: {TypeCost}\n\n",
-            "Total Cost = ({PersonalPriorityCost} * {BuildingPriorityCost} * {TravelCost}) + {TypeCost} = {TotalCost}"
+            "Total Cost = ({PersonalPriorityCost} × {BuildingPriorityCost} × {TravelCost}) + {TypeCost} = {TotalCost}"
         );
         
         // Return a generic tooltip with detailed chore importance breakdown.
@@ -54,8 +54,11 @@ namespace RationalPriority
             __result = __result.Replace("{PersonalPriorityValue}", (1 << (personalPriority*2-2)).ToString());
             __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
             int taskPriority = context.masterPriority.priority_value;
+            string buildingPriority = taskPriority.ToString();
+            bool hasSkillModifier = HasSkillPerkPriorityModifier(context);
+            if (hasSkillModifier) { buildingPriority += "*"; }
             __result = __result.Replace("{BuildingPriorityValue}", (1 << (taskPriority-1)).ToString());
-            __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());
+            __result = __result.Replace("{BuildingPriority}", buildingPriority);
             float basePriority = (float)context.priority / 10000f;
             __result = __result.Replace("{TypePriority}", basePriority.ToString());
             // this follows the cost calc, and is thus a bit ugly
@@ -67,6 +70,9 @@ namespace RationalPriority
             __result = __result.Replace("{TravelDistance}", ((float)context.cost/10.0f).ToString("#,0.#"));
             double totalPriority = (double)Util.TaskImportance(context) + (double)basePriority;
             __result = __result.Replace("{TotalPriority}", totalPriority.ToString("#,0.###"));
+            if (hasSkillModifier) {
+                __result += "\n\n* This task's learned skill requirement slightly increases its priority for skilled duplicants.";
+            }
             return __result;
         }
         
@@ -89,8 +95,11 @@ namespace RationalPriority
             __result = __result.Replace("{PersonalPriorityCost}", (1 << ((5 - personalPriority) << 1)).ToString());
             __result = __result.Replace("{Building}", context.chore.gameObject.GetProperName());
             int taskPriority = context.masterPriority.priority_value;
+            string buildingPriority = taskPriority.ToString();
+            bool hasSkillModifier = HasSkillPerkPriorityModifier(context);
+            if (hasSkillModifier) { buildingPriority += "*"; }
             __result = __result.Replace("{BuildingPriorityCost}", (1 << (9 -taskPriority)).ToString());
-            __result = __result.Replace("{BuildingPriority}", taskPriority.ToString());
+            __result = __result.Replace("{BuildingPriority}", buildingPriority);
             float basePriority = (float)context.priority / 10000f;
             __result = __result.Replace("{TypeCost}", (1f - basePriority).ToString());
             int travelCost = context.cost;
@@ -101,7 +110,26 @@ namespace RationalPriority
             __result = __result.Replace("{TravelDistance}", ((float)context.cost/10.0f).ToString("#,0.#"));
             double totalCost = (double)Util.TaskCost(context) + 1d - (double)basePriority;
             __result = __result.Replace("{TotalCost}", totalCost.ToString("#,0.###"));
+            if (hasSkillModifier) {
+                __result += "\n\n* This task's learned skill requirement slightly increases its priority for skilled duplicants.";
+            }
             return __result;
+        }
+        
+        // whether priority has been modified by learned skill importance
+        public static bool HasSkillPerkPriorityModifier(
+            Chore.Precondition.Context context
+        ) {
+            List<Chore.PreconditionInstance> preconditions =
+                context.chore.GetPreconditions();
+            for (int i = 0; i < preconditions.Count; i++)
+            {
+                if (preconditions[i].id == "HasSkillPerk")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         
         // this is the same as in the base code.
@@ -186,6 +214,7 @@ namespace RationalPriority
             } else if (c == PriorityScreen.PriorityClass.compulsory) {
                 __result = TOOLTIP_COMPULSORY;
             } else { // basic || high
+                // the bulk of the info comes from the shared method here
                 __result = Tooltips.ByImportance(context, choreConsumer);
             }
             __result = __result.Replace("{Description}", (context.chore.driver == choreConsumer.choreDriver) ? UI.UISIDESCREENS.MINIONTODOSIDESCREEN.TOOLTIP_DESC_ACTIVE : UI.UISIDESCREENS.MINIONTODOSIDESCREEN.TOOLTIP_DESC_INACTIVE);

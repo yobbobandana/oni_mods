@@ -5,6 +5,7 @@ using STRINGS;
 using UnityEngine; // GameObject
 using System.Reflection; // MethodInfo
 using System.Runtime.CompilerServices; // MethodImpl
+using Database; // SkillPerk, Skill
 
 // An attempt to make duplicant prioritization somewhat sane.
 // 
@@ -428,6 +429,88 @@ namespace RationalPriority
             // but it's not actually used anywhere in base code so why bother?
             
             return false; // skip original
+        }
+    }
+    
+    // --------------------------------
+    // duplicant learned skill modifier
+    // --------------------------------
+    
+    // apply a small modifier to priority,
+    // for tasks requiring skilled labour.
+    // currently this is +1 task priority per two skill levels.
+    // this rounds to +1 priority for level 1 and 2 skills,
+    // and +2 priority for level 3 and 4 skills.
+    [HarmonyPatch(typeof(ChorePreconditions))]
+    [HarmonyPatch(MethodType.Constructor)]
+    public class DuplicantLearnedSkillModifier
+    {
+        public static void Postfix(
+            ref ChorePreconditions __instance
+        ) {
+            __instance.HasSkillPerk.fn = delegate(
+                ref Chore.Precondition.Context context,
+                object data
+            ) {
+                // note: this is a resumé, not a resumption.
+                MinionResume resume = context.consumerState.resume;
+                if (!resume) { return false; }
+                // tier will match the lowest dupe skill giving the perk
+                int tier = int.MaxValue;
+                // i'm pretty sure this is always going to be a HashedString,
+                // but base code is like this, so...
+                if (data is SkillPerk)
+                {
+                    SkillPerk perk = data as SkillPerk;
+                    // resume.HasPerk
+                    foreach (KeyValuePair<string, bool> item in resume.MasteryBySkillID)
+                    {
+                        Skill skill = Db.Get().Skills.Get(item.Key);
+                        if (item.Value && skill.GivesPerk(perk))
+                        {
+                            if (skill.tier < tier) { tier = skill.tier; }
+                        }
+                    }
+                }
+                else if (data is HashedString)
+                {
+                    HashedString perkId = (HashedString)data;
+                    // resume.HasPerk
+                    foreach (KeyValuePair<string, bool> item in resume.MasteryBySkillID)
+                    {
+                        Skill skill = Db.Get().Skills.Get(item.Key);
+                        if (item.Value && skill.GivesPerk(perkId))
+                        {
+                            if (skill.tier < tier) { tier = skill.tier; }
+                        }
+                    }
+                }
+                else if (data is string)
+                {
+                    HashedString perkId2 = (string)data;
+                    // resume.HasPerk
+                    foreach (KeyValuePair<string, bool> item in resume.MasteryBySkillID)
+                    {
+                        Skill skill = Db.Get().Skills.Get(item.Key);
+                        if (item.Value && skill.GivesPerk(perkId2))
+                        {
+                            if (skill.tier < tier) { tier = skill.tier; }
+                        }
+                    }
+                }
+                else { return false; }
+                if (tier == int.MaxValue) { return false; }
+                // add the skill level to the priority directly.
+                // tier 0 corresponds to learned skill level 1.
+                // +0.5 priority per skill tier, rounded up.
+                context.masterPriority.priority_value += (tier + 2) / 2;
+                // clamp to the max priority so nothing unexpected happens
+                if (context.masterPriority.priority_value > Chore.MAX_PLAYER_BASIC_PRIORITY)
+                {
+                    context.masterPriority.priority_value = Chore.MAX_PLAYER_BASIC_PRIORITY;
+                }
+                return true;
+            };
         }
     }
     

@@ -1,0 +1,52 @@
+The printing pod is broken and can't stop printing dupes! How long can you last while printing a new duplicant every three cycles?
+
+[h2]Challenge Info[/h2]
+
+This challenge has been fairly popular, and is sometimes referred to as the "print every dupe" challenge, the "accept every dupe" challenge, and other similar names. While there are ways to eke out survival, keeping all these duplicants alive is very difficult. There is only one basic rule, which is:
+
+[b][i]Every time as soon as the printing pod is ready to print, you must print a duplicant.[/i][/b]
+
+[h2]What this mod does[/h2]
+
+This mod enforces the challenge in a few ways. It is primarily for convenience, to make this easier as a self-imposed challenge. The mod:
+[list]
+[*] automatically pauses the game and opens the duplicant selection screen as soon as the printing pod is ready to print, so you don't miss it
+[*] disables care packages while enabled, as they take up a valuable duplicant slot
+[*] allows the main menu to be accessed while the printing pod menu is open, so you can save the game if needed
+[*] removes the "reject all" feature from the printing pod
+[*] removes the close button from the duplicant selection screen
+[/list]
+
+You can still access other screens such as the vitals and skill screens while duplicant selection is active, so you can check what dupes and skills you already have before making a decision on which dupe to accept.
+
+[h2]What if i want to turn it off?[/h2]
+
+As this mod is intended to assist in enforcing the self-imposed challenge, i did not make it [i]absolutely[/i] strict.
+
+[list]
+[*] You can disable the mod at any time, and your game will revert to a normal game.
+[*] The save-load exploit still works, in that when you save the game with the printing pod ready to print, you will get a different selection of available dupes when you reload.
+[*] If you are overwhelmed and really just want to chill out on the challenge temporarily, you can disable the printing pod building itself. It will not print while disabled.
+[/list]
+
+[h2]How does this work with the Spaced Out DLC?[/h2]
+
+In Spaced Out, duplicants will always be printed at [i]the main printing pod[/i] on your starting asteroid. Mini-pods built on other asteroids will have no effect, other than providing free light. In practice this is not usually a problem, and just adds a bit of spice to the challenge.
+
+That said, if you really really want to print from another pod... you can disable all the ones you don't want to print from and dupes will pop out at the one you want. Just don't disable them all or nothing will print.
+
+If somebody wants to do the work making a little selection interface or something, i do accept patches.
+
+[h2]Acknowledgements[/h2]
+
+Thanks to Sonia_k for the preview image :)
+
+[h2]Bugs, Feedback and Requests[/h2]
+
+As always, all feedback is welcome. Either here, or on github. I do read Steam comments.
+
+[h2]Source code and copyright[/h2]
+
+Source code for this mod can be found on github, [url=https://github.com/yobbobandana/oni_mods/tree/master/populist_challenge]here[/url].
+
+As far as i am concerned, this mod is public domain. You can adapt, copy, modify, repost, or generally do whatever you want with it without my permission, so long as you also abide by Klei's terms of use.

@@ -17,13 +17,17 @@ using Database; // SkillPerk, Skill
 //   1. Master Priority Class:
 //       idle < basic < high < personal needs < top priority < compulsion
 //       most player-selectable tasks are "basic", unless "!!" top priority.
+//       eating, toileting, sleeping etc. are "personal needs".
+//       a player-specified move order is "compulsion".
+//       downtime tasks such as relaxation are "high".
 //   2. Personal Priority: 0(disabled) to 5(very high)
 //       this is the value set in the priority screen for the duplicant
 //   3. Master Priority Value: 1 to 9 - the settable task priority value
 //   4. Priority: 0 to 9999 - a preset internal priority per task type
 //       if "enable proximity" is selected, this is set to 5000 for most tasks
 //   5. PriorityMod: something related to fetch tasks, not sure if used at all
-//   6. Consumer Priority: not sure what this is or if used at all
+//   6. Consumer Priority: used to prioritize relaxation tasks, such as
+//       preferring a jukebox over a water cooler.
 //   7. Navigation Cost: 10 * the travel distance to the job
 // 
 // This mod changes the system to work heuristically.
@@ -514,6 +518,86 @@ namespace RationalPriority
         }
     }
     
+    // --------------------------------
+    // Recreational preference modifier
+    // --------------------------------
+    
+    // recreational buildings use Consumer Priority to determine precedence,
+    // but also do not use the master priority value at all.
+    // thus we might as well just override the master priority value
+    // with something sensible relating to consumer priority.
+    // consumer prio is usually 1 for idle relaxation,
+    // and 20-50 for relaxation machines.
+    // water coolers are 20, expresso machines are 50, jukebots are 30,
+    // sun chairs are 40.
+    // 10 is for general "mingling" (hanging out at rec spots and chatting),
+    // and 5 seems to be used for refreshable buffs that haven't yet run out.
+    [HarmonyPatch(typeof(ChorePreconditions))]
+    [HarmonyPatch(MethodType.Constructor)]
+    public class RecreationalPreferenceModifier
+    {
+        public static void Postfix(
+            ref ChorePreconditions __instance
+        ) {
+            __instance.CanDoWorkerPrioritizable.fn = delegate(
+                ref Chore.Precondition.Context context,
+                object data
+            ) {
+                if (context.consumerState.consumer == null)
+                {
+                    return false;
+                }
+                if (!(data is IWorkerPrioritizable workerPrioritizable))
+                {
+                    return false;
+                }
+                int priority = 0;
+                if (workerPrioritizable.GetWorkerPriority(context.consumerState.worker, out priority))
+                {
+                    context.consumerPriority += priority;
+                    
+                    // make sure this only applies to recreation
+                    if (context.masterPriority.priority_class == PriorityScreen.PriorityClass.high)
+                    {
+                        // override master priority, which is otherwise unused.
+                        // consumerPriority could be taken into account in stead,
+                        // but there's not really any need as masterPriority is
+                        // not used for recreational tasks.
+                        // technically personal preference is also unused,
+                        // but this is a little clearer in tooltips.
+                        if (context.consumerPriority <= 4) {
+                            // 1 = idling in rec rooms
+                            context.masterPriority.priority_value = 1;
+                        } else if (context.consumerPriority <= 9) {
+                            // 5 seems used for buffs that could be refreshed
+                            // but not have yet completely run out
+                            context.masterPriority.priority_value = 3;
+                        } else if (context.consumerPriority <= 19) {
+                            // 10 = mingling
+                            context.masterPriority.priority_value = 4;
+                        } else if (context.consumerPriority <= 29) {
+                            // 20 = water cooler
+                            context.masterPriority.priority_value = 5;
+                        } else if (context.consumerPriority <= 39) {
+                            // 30 = jukebot
+                            context.masterPriority.priority_value = 6;
+                        } else if (context.consumerPriority <= 49) {
+                            // 40 = beach chair
+                            context.masterPriority.priority_value = 7;
+                        } else if (context.consumerPriority <= 59) {
+                            // 50 = espresso machine
+                            context.masterPriority.priority_value = 8;
+                        } else {
+                            context.masterPriority.priority_value = 9;
+                        }
+                    }
+                    
+                    return true;
+                }
+                return false;
+            };
+        }
+    }
     
     // ----------------------------
     // chore precondition overrides

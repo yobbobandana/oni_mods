@@ -341,6 +341,11 @@ namespace RationalPriority
             __result = __result.Replace("{Name}", choreConsumer.name);
             __result = __result.Replace("{Errand}", GameUtil.GetChoreName(context.chore, context.data));
             __result = __result.Replace("{Rank}", rank.ToString());
+            
+            // maybe tack on a bunch of debug info
+            if (Util.debugTooltips) {
+                __result += "\n\n" + ChoreTooltipsOverride.DebugInfo(context, choreConsumer);
+            }
             return false;
         }
     }

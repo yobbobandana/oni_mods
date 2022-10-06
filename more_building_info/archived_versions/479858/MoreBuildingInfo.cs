@@ -41,8 +41,8 @@ namespace MoreBuildingInfo
                 new Pair<Tag, string>(RoomConstraints.ConstraintTags.Clinic, ROOMS.CRITERIA.CLINIC.NAME),
                 new Pair<Tag, string>(RoomConstraints.ConstraintTags.WashStation, ROOMS.CRITERIA.WASH_STATION.NAME),
                 new Pair<Tag, string>(RoomConstraints.ConstraintTags.AdvancedWashStation, ROOMS.CRITERIA.ADVANCED_WASH_STATION.NAME),
-                new Pair<Tag, string>(RoomConstraints.ConstraintTags.ToiletType, ROOMS.CRITERIA.TOILET.NAME),
-                new Pair<Tag, string>(RoomConstraints.ConstraintTags.FlushToiletType, ROOMS.CRITERIA.FLUSH_TOILET.NAME),
+                new Pair<Tag, string>(RoomConstraints.ConstraintTags.Toilet, ROOMS.CRITERIA.TOILET.NAME),
+                new Pair<Tag, string>(RoomConstraints.ConstraintTags.FlushToilet, ROOMS.CRITERIA.FLUSH_TOILET.NAME),
                 new Pair<Tag, string>(GameTags.Decoration, ROOMS.CRITERIA.DECORATIVE_ITEM.NAME)
             };
             List<Descriptor> ret = new List<Descriptor>();
@@ -124,8 +124,42 @@ namespace MoreBuildingInfo
         }
     }
     
-    // Build 525812 or so added the requirements class to the build info pane,
-    // so that part of this is no longer required.
-    // It's a bit ugly as it doesn't use the nice pretty colour...
-    // but not so ugly that i'm going to change it.
+    // -----------------------------------------------
+    // additional information when planning / building
+    // -----------------------------------------------
+    [HarmonyPatch(typeof(ProductInfoScreen))]
+    [HarmonyPatch("SetEffects")]
+    public class PlanningBuildingInformationPatch
+    {
+        // execute after because we have to overwrite only part of it
+        public static void Postfix(BuildingDef def, ref ProductInfoScreen __instance)
+        {
+            // the product info screen has certain hardcoded panes,
+            // which are individually toggled situationally.
+            // i want to tack the room requirements class onto the effects pane,
+            // which has to be done by completely rewriting it;
+            // because while HasDescriptors and SetDescriptors are implemented,
+            // GetDescriptors is not. [unimpressed]
+            List<Descriptor> allDescriptors = GameUtil.GetAllDescriptors(def.BuildingComplete);
+            // note: GetEffectDescriptors indents them automatically
+            List<Descriptor> effectDescriptors = GameUtil.GetEffectDescriptors(allDescriptors);
+            bool active = false;
+            if (effectDescriptors.Count > 0)
+            {
+                Descriptor item2 = default(Descriptor);
+                item2.SetupDescriptor(UI.BUILDINGEFFECTS.OPERATIONEFFECTS, UI.BUILDINGEFFECTS.TOOLTIPS.OPERATIONEFFECTS);
+                effectDescriptors.Insert(0, item2);
+                active = true;
+            }
+            List<Descriptor> roomDescriptors = Util.GetRoomDescriptors(def.BuildingComplete);
+            if (roomDescriptors.Count > 0)
+            {
+                active = true;
+            }
+            
+            effectDescriptors.AddRange(roomDescriptors);
+            __instance.ProductEffectsPane.gameObject.SetActive(value: active);
+            __instance.ProductEffectsPane.SetDescriptors(effectDescriptors);
+        }
+    }
 }

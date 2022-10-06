@@ -1,3 +1,4 @@
+v0.5: update for ONI build 525812
 v0.4: duplicants will now prefer more entertaining relaxation pastimes
 v0.3: tasks requiring learned skills are now considered slightly more important than unskilled tasks, so duplicants with those skills are more likely to do them.
 v0.2: clarify todo list tooltips, and correct errands tab tooltips.

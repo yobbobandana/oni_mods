@@ -59,6 +59,9 @@ using Database; // SkillPerk, Skill
 //   * reduced importance of storage tasks for tiny amounts of material
 //   * importance reduction proportionate to wasted carrying capacity
 
+// other included features:
+//   * "out of world" dupes will not be listed in building errands
+
 namespace RationalPriority
 {
     // this just does the default thing
@@ -277,11 +280,15 @@ namespace RationalPriority
             {
                 __result = false; return false;
             }
-            if (__instance.idsHash != fetch.idsHash)
+            if (__instance.tagBitsHash != fetch.tagBitsHash)
             {
                 __result = false; return false;
             }
             if (__instance.chore.choreType != fetch.chore.choreType)
+            {
+                __result = false; return false;
+            }
+            if (!__instance.chore.tagBits.AreEqual(ref fetch.chore.tagBits))
             {
                 __result = false; return false;
             }
@@ -367,7 +374,7 @@ namespace RationalPriority
         static MethodInfo TargetMethod()
         {
             return AccessTools.TypeByName("ClearableManager")
-                .GetMethod("CollectAndSortClearables");
+                .GetMethod("CollectSortedClearables", BindingFlags.NonPublic | BindingFlags.Static);
         }
         
         // this structure must absolutely match that in ClearableManager
@@ -378,8 +385,8 @@ namespace RationalPriority
             public Prioritizable prioritizable;
         }
         
-        // this structure must absolutely match that in ClearableManager,
-        // except that we override the compare method.
+        // this structure must absolutely match that in ClearableManager.
+        // we override the comparer method.
         // this is kept simple by overloading the "cost" field,
         // such that it already incorporates task priority.
         private struct SortedClearable
@@ -401,17 +408,17 @@ namespace RationalPriority
         // it should be otherwise identical to base.
         static bool Prefix(
             Navigator navigator,
-            ref KCompactedVector<MarkedClearable> ___markedClearables,
-            ref List<SortedClearable> ___sortedClearables
+            KCompactedVector<MarkedClearable> clearables,
+            List<SortedClearable> sorted_clearables
         ) {
-            ___sortedClearables.Clear();
-            foreach (MarkedClearable data in ___markedClearables.GetDataList())
+            sorted_clearables.Clear();
+            foreach (MarkedClearable data in clearables.GetDataList())
             {
                 int navigationCost = data.pickupable.GetNavigationCost(navigator, data.pickupable.cachedCell);
                 if (navigationCost != -1)
                 {
                     PrioritySetting prio = data.prioritizable.GetMasterPriority();
-                    ___sortedClearables.Add(new SortedClearable
+                    sorted_clearables.Add(new SortedClearable
                     {
                         pickupable = data.pickupable,
                         masterPriority = prio,
@@ -420,7 +427,7 @@ namespace RationalPriority
                     });
                 }
             }
-            ___sortedClearables.Sort(SortedClearable.comparer);
+            sorted_clearables.Sort(SortedClearable.comparer);
             
             // we might theoretically want to reset the cost field here,
             // but it's not actually used anywhere in base code so why bother?
